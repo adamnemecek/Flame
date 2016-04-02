@@ -7,6 +7,7 @@
 //
 
 #include <metal_stdlib>
+#include <metal_matrix>
 
 using namespace metal;
 

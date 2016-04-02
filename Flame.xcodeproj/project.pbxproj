@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B91EA1671CAA5D6100BFEC30 /* TriangleRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B91EA1661CAA5D6100BFEC30 /* TriangleRenderer.swift */; };
 		B92E8A011CA85E4500F8768A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B92E8A001CA85E4500F8768A /* AppDelegate.swift */; };
 		B92E8A031CA85E4500F8768A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B92E8A021CA85E4500F8768A /* ViewController.swift */; };
 		B92E8A051CA85E4500F8768A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B92E8A041CA85E4500F8768A /* Assets.xcassets */; };
@@ -16,6 +17,10 @@
 		B92E8A201CA86B0300F8768A /* WindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B92E8A1F1CA86B0300F8768A /* WindowController.swift */; };
 		B92E8A221CA872AC00F8768A /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = B92E8A211CA872AC00F8768A /* Shaders.metal */; };
 		B92E8A281CA97AA300F8768A /* MetalHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B92E8A271CA97AA300F8768A /* MetalHelpers.swift */; };
+		B9D796591CB079F3002FFDF6 /* Entity.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9D796581CB079F3002FFDF6 /* Entity.swift */; };
+		B9D7965B1CB07A1B002FFDF6 /* Renderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9D7965A1CB07A1B002FFDF6 /* Renderer.swift */; };
+		B9E16AA81CAA46BF0027032F /* Scene.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9E16AA71CAA46BF0027032F /* Scene.swift */; };
+		B9E16AAA1CAA4B5A0027032F /* MeshRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9E16AA91CAA4B5A0027032F /* MeshRenderer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,6 +34,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B91EA1661CAA5D6100BFEC30 /* TriangleRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TriangleRenderer.swift; sourceTree = "<group>"; };
 		B92E89FD1CA85E4500F8768A /* Flame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Flame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B92E8A001CA85E4500F8768A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B92E8A021CA85E4500F8768A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -42,6 +48,10 @@
 		B92E8A1F1CA86B0300F8768A /* WindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WindowController.swift; sourceTree = "<group>"; };
 		B92E8A211CA872AC00F8768A /* Shaders.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
 		B92E8A271CA97AA300F8768A /* MetalHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MetalHelpers.swift; sourceTree = "<group>"; };
+		B9D796581CB079F3002FFDF6 /* Entity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Entity.swift; sourceTree = "<group>"; };
+		B9D7965A1CB07A1B002FFDF6 /* Renderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Renderer.swift; sourceTree = "<group>"; };
+		B9E16AA71CAA46BF0027032F /* Scene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Scene.swift; sourceTree = "<group>"; };
+		B9E16AA91CAA4B5A0027032F /* MeshRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeshRenderer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,8 +96,9 @@
 				B92E8A001CA85E4500F8768A /* AppDelegate.swift */,
 				B92E8A061CA85E4500F8768A /* Main.storyboard */,
 				B92E8A251CA956E500F8768A /* UI */,
-				B92E8A231CA956C700F8768A /* Shaders */,
+				B9E16AA61CAA468F0027032F /* Engine */,
 				B92E8A261CA97A8000F8768A /* Utilities */,
+				B92E8A231CA956C700F8768A /* Shaders */,
 				B92E8A241CA956D000F8768A /* Supporting Files */,
 			);
 			path = Flame;
@@ -135,6 +146,42 @@
 				B92E8A271CA97AA300F8768A /* MetalHelpers.swift */,
 			);
 			name = Utilities;
+			sourceTree = "<group>";
+		};
+		B9D796551CB079C9002FFDF6 /* Renderer */ = {
+			isa = PBXGroup;
+			children = (
+				B9D7965A1CB07A1B002FFDF6 /* Renderer.swift */,
+			);
+			name = Renderer;
+			sourceTree = "<group>";
+		};
+		B9D796561CB079D2002FFDF6 /* World */ = {
+			isa = PBXGroup;
+			children = (
+				B9E16AA71CAA46BF0027032F /* Scene.swift */,
+				B9D796581CB079F3002FFDF6 /* Entity.swift */,
+				B9D796571CB079E3002FFDF6 /* Components */,
+			);
+			name = World;
+			sourceTree = "<group>";
+		};
+		B9D796571CB079E3002FFDF6 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				B9E16AA91CAA4B5A0027032F /* MeshRenderer.swift */,
+				B91EA1661CAA5D6100BFEC30 /* TriangleRenderer.swift */,
+			);
+			name = Components;
+			sourceTree = "<group>";
+		};
+		B9E16AA61CAA468F0027032F /* Engine */ = {
+			isa = PBXGroup;
+			children = (
+				B9D796561CB079D2002FFDF6 /* World */,
+				B9D796551CB079C9002FFDF6 /* Renderer */,
+			);
+			name = Engine;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -238,10 +285,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				B92E8A1E1CA863FC00F8768A /* MetalView.swift in Sources */,
+				B9E16AAA1CAA4B5A0027032F /* MeshRenderer.swift in Sources */,
 				B92E8A201CA86B0300F8768A /* WindowController.swift in Sources */,
 				B92E8A031CA85E4500F8768A /* ViewController.swift in Sources */,
+				B9D7965B1CB07A1B002FFDF6 /* Renderer.swift in Sources */,
 				B92E8A011CA85E4500F8768A /* AppDelegate.swift in Sources */,
+				B9E16AA81CAA46BF0027032F /* Scene.swift in Sources */,
+				B9D796591CB079F3002FFDF6 /* Entity.swift in Sources */,
 				B92E8A221CA872AC00F8768A /* Shaders.metal in Sources */,
+				B91EA1671CAA5D6100BFEC30 /* TriangleRenderer.swift in Sources */,
 				B92E8A281CA97AA300F8768A /* MetalHelpers.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -365,6 +417,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = be.kennyderiemaeker.Flame;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 			};
 			name = Debug;
 		};
@@ -377,6 +430,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = be.kennyderiemaeker.Flame;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 			};
 			name = Release;
 		};
