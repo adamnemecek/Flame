@@ -19,6 +19,7 @@
 		B92E8A281CA97AA300F8768A /* MetalHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = B92E8A271CA97AA300F8768A /* MetalHelpers.swift */; };
 		B9D796591CB079F3002FFDF6 /* Entity.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9D796581CB079F3002FFDF6 /* Entity.swift */; };
 		B9D7965B1CB07A1B002FFDF6 /* Renderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9D7965A1CB07A1B002FFDF6 /* Renderer.swift */; };
+		B9D7965D1CB08732002FFDF6 /* Notifications.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9D7965C1CB08732002FFDF6 /* Notifications.swift */; };
 		B9E16AA81CAA46BF0027032F /* Scene.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9E16AA71CAA46BF0027032F /* Scene.swift */; };
 		B9E16AAA1CAA4B5A0027032F /* MeshRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9E16AA91CAA4B5A0027032F /* MeshRenderer.swift */; };
 /* End PBXBuildFile section */
@@ -50,6 +51,7 @@
 		B92E8A271CA97AA300F8768A /* MetalHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MetalHelpers.swift; sourceTree = "<group>"; };
 		B9D796581CB079F3002FFDF6 /* Entity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Entity.swift; sourceTree = "<group>"; };
 		B9D7965A1CB07A1B002FFDF6 /* Renderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Renderer.swift; sourceTree = "<group>"; };
+		B9D7965C1CB08732002FFDF6 /* Notifications.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Notifications.swift; sourceTree = "<group>"; };
 		B9E16AA71CAA46BF0027032F /* Scene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Scene.swift; sourceTree = "<group>"; };
 		B9E16AA91CAA4B5A0027032F /* MeshRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MeshRenderer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -144,6 +146,7 @@
 			isa = PBXGroup;
 			children = (
 				B92E8A271CA97AA300F8768A /* MetalHelpers.swift */,
+				B9D7965C1CB08732002FFDF6 /* Notifications.swift */,
 			);
 			name = Utilities;
 			sourceTree = "<group>";
@@ -284,6 +287,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B9D7965D1CB08732002FFDF6 /* Notifications.swift in Sources */,
 				B92E8A1E1CA863FC00F8768A /* MetalView.swift in Sources */,
 				B9E16AAA1CAA4B5A0027032F /* MeshRenderer.swift in Sources */,
 				B92E8A201CA86B0300F8768A /* WindowController.swift in Sources */,

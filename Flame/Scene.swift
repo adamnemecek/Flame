@@ -17,7 +17,7 @@ class Scene {
 
     // MARK: - Properties
     
-    private var entities = [Entity]()
+    var entities = [Entity]()
 
     // MARK: - Init & deinit
     
@@ -26,6 +26,8 @@ class Scene {
         triangle.name = "Triangle"
         triangle.addComponent(TriangleRenderer())
         entities.append(triangle)
+        
+        postNotification(.SceneHierarchyChanged)
     }
     
     // MARK: - Public API
