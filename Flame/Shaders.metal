@@ -11,23 +11,38 @@
 
 using namespace metal;
 
-struct ColoredVertex
+struct Uniforms
+{
+    float4x4 modelViewProjectionMatrix;
+};
+
+struct Vertex
 {
     float4 position [[position]];
     float4 color;
 };
 
-vertex ColoredVertex vertex_main(constant float4 *position [[buffer(0)]],
-                                 constant float4 *color [[buffer(1)]],
-                                 uint vid [[vertex_id]])
+struct ProjectedVertex
 {
-    ColoredVertex vert;
-    vert.position = position[vid];
-    vert.color = color[vid];
+    float4 position [[position]];
+    float4 color;
+};
+
+// Vertex shader
+vertex ProjectedVertex vertex_main(constant Vertex *vertices [[buffer(0)]],
+                                 constant Uniforms &uniforms [[buffer(1)]],
+                                 uint vertexID [[vertex_id]])
+{
+    ProjectedVertex vert;
+    
+    vert.position = uniforms.modelViewProjectionMatrix * vertices[vertexID].position;
+    vert.color = vertices[vertexID].color;
+    
     return vert;
 }
 
-fragment float4 fragment_main(ColoredVertex vert [[stage_in]])
+// Fragment shader
+fragment float4 fragment_main(ProjectedVertex vert [[stage_in]])
 {
     return vert.color;
 }

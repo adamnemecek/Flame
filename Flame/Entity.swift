@@ -21,5 +21,5 @@ class Entity : GKEntity {
 }
 
 class Transform : GKComponent {
-    var matrix = float4x4()
+    var matrix = float4x4.identity()
 }

@@ -21,11 +21,3 @@ func decompose(elements: [float4]) -> [Float] {
     }
     return result
 }
-
-extension float4x4 {
-    
-    static func identity() -> float4x4 {
-        return float4x4(diagonal: float4(1, 1, 1, 1))
-    }
-
-}

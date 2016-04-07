@@ -27,7 +27,11 @@ class Scene {
         triangle.addComponent(TriangleRenderer())
         entities.append(triangle)
         
-        postNotification(.SceneHierarchyChanged)
+        let triangle2 = Entity()
+        triangle2.name = "Triangle2"
+        triangle2.addComponent(TriangleRenderer(color1: float3(0, 1, 1), color2: float3(1, 0, 1), color3: float3(1, 1, 0)))
+        triangle2.transform.matrix = float4x4.makeTranslation(0.5, 0, -0.3).rotate(0.5, 0, 1, 0)
+        entities.append(triangle2)
     }
     
     // MARK: - Public API

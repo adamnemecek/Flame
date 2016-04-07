@@ -11,6 +11,8 @@ import MetalKit
 class Renderer {
     
     static let sharedInstance = Renderer()
+
+    private var angle: Float = 0.0
     
     // MARK: - Properties
     
@@ -19,38 +21,70 @@ class Renderer {
     private var commandQueue: MTLCommandQueue!
     private var defaultLibrary: MTLLibrary!
     private var pipeline: MTLRenderPipelineState?
+
+    private var depthStencilState: MTLDepthStencilState?
+    private var depthTexture: MTLTexture!
     
     // MARK: - Init & deinit
     
     init() {
         device = MTLCreateSystemDefaultDevice()
-        
         commandQueue = device.newCommandQueue()
         defaultLibrary = device.newDefaultLibrary()!
-
-        setupRenderPipeline()
-    }
-    
-    func setup() {
     }
     
     // MARK: - Public API
 
     func render(drawable: CAMetalDrawable) {
         let renderPass = MTLRenderPassDescriptor()
+
         renderPass.colorAttachments[0].texture = drawable.texture
         renderPass.colorAttachments[0].clearColor = MTLClearColor(red: 0.15, green: 0.16, blue: 0.19, alpha: 0)
         renderPass.colorAttachments[0].loadAction = .Clear
         renderPass.colorAttachments[0].storeAction = .Store
         
+        renderPass.depthAttachment.texture = depthTexture
+        renderPass.depthAttachment.loadAction = .Clear
+        renderPass.depthAttachment.storeAction = .Store
+        renderPass.depthAttachment.clearDepth = 1.0
+        
+        
         let commandQueue = device.newCommandQueue()
         let commandBuffer = commandQueue.commandBuffer()
         
         let commandEncoder = commandBuffer.renderCommandEncoderWithDescriptor(renderPass)
-        commandEncoder.setRenderPipelineState(pipeline!)
+        
+        if let pipelineState = pipeline {
+            commandEncoder.setRenderPipelineState(pipelineState)
+        }
+        
+        if let depthStencilState = depthStencilState {
+            commandEncoder.setDepthStencilState(depthStencilState)
+        }
+
+        let aspect = Float(drawable.texture.width) / Float(drawable.texture.height)
+        let fovY: Float = 20.0
+        
+        //let viewMatrix = float4x4.identity().translate(0, 0, -1)
+        let viewMatrix = float4x4.makeLookAt(0, 1, 2, 0, 0.5, 0, 0, 1, 0)
+        let projectionMatrix = float4x4.makePerspective(fovY, aspect, 0.1, 100)
+        
+        angle += 0.01
         
         for meshRenderer in Scene.sharedInstance.getMeshRenderers() {
-            meshRenderer.draw(commandEncoder)
+            if let entity = meshRenderer.entity as? Entity {
+                let modelMatrix = entity.transform.matrix.rotate(angle, 0, 1, 0)
+                let modelViewMatrix = viewMatrix * modelMatrix
+                let mvpMatrix = projectionMatrix * modelViewMatrix
+
+                let uniformBuffer = device.newBufferWithLength(sizeof(Float) * 16, options: .CPUCacheModeDefaultCache)
+                let uniformBufferPtr = uniformBuffer.contents()
+                memcpy(uniformBufferPtr, mvpMatrix.decompose(), sizeof(Float) * 16)
+                
+                commandEncoder.setVertexBuffer(uniformBuffer, offset: 0, atIndex: 1)
+                
+                meshRenderer.draw(commandEncoder)
+            }
         }
         
         commandEncoder.endEncoding()
@@ -58,10 +92,7 @@ class Renderer {
         commandBuffer.commit()
     }
 
-    
-    // MARK: - Private API
-    
-    private func setupRenderPipeline() {
+    func setup(framebufferSize: CGSize) {
         let vertexDescriptor = MTLVertexDescriptor()
         vertexDescriptor.attributes[0].format = .Float4
         vertexDescriptor.attributes[0].bufferIndex = 0
@@ -78,10 +109,22 @@ class Renderer {
         pipelineDescriptor.vertexFunction = defaultLibrary.newFunctionWithName("vertex_main")
         pipelineDescriptor.fragmentFunction = defaultLibrary.newFunctionWithName("fragment_main")
         pipelineDescriptor.colorAttachments[0].pixelFormat = .BGRA8Unorm
+        pipelineDescriptor.depthAttachmentPixelFormat = .Depth32Float
         pipelineDescriptor.vertexDescriptor = vertexDescriptor
-        
         pipeline = try! device.newRenderPipelineStateWithDescriptor(pipelineDescriptor)
+        
+        let depthStencilDescriptor = MTLDepthStencilDescriptor()
+        depthStencilDescriptor.depthWriteEnabled = true
+        depthStencilDescriptor.depthCompareFunction = .Less
+        depthStencilState = device.newDepthStencilStateWithDescriptor(depthStencilDescriptor)
+        
+        let depthTextureDescriptor = MTLTextureDescriptor()
+        depthTextureDescriptor.resourceOptions = .StorageModePrivate
+        depthTextureDescriptor.usage = .RenderTarget
+        depthTextureDescriptor.pixelFormat = .Depth32Float
+        depthTextureDescriptor.width = Int(framebufferSize.width)
+        depthTextureDescriptor.height = Int(framebufferSize.height)
+        depthTexture = device.newTextureWithDescriptor(depthTextureDescriptor)
     }
     
 }
-
