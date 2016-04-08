@@ -11,10 +11,10 @@ import MetalKit
 class Renderer {
     
     static let sharedInstance = Renderer()
-
-    private var angle: Float = 0.0
     
     // MARK: - Properties
+
+    var angle: Float = 0.0
     
     var device: MTLDevice!
     
@@ -48,7 +48,6 @@ class Renderer {
         renderPass.depthAttachment.storeAction = .Store
         renderPass.depthAttachment.clearDepth = 1.0
         
-        
         let commandQueue = device.newCommandQueue()
         let commandBuffer = commandQueue.commandBuffer()
         
@@ -65,15 +64,12 @@ class Renderer {
         let aspect = Float(drawable.texture.width) / Float(drawable.texture.height)
         let fovY: Float = 20.0
         
-        //let viewMatrix = float4x4.identity().translate(0, 0, -1)
-        let viewMatrix = float4x4.makeLookAt(0, 1, 2, 0, 0.5, 0, 0, 1, 0)
+        let viewMatrix = float4x4.identity().translate(0, 0, -3)
         let projectionMatrix = float4x4.makePerspective(fovY, aspect, 0.1, 100)
-        
-        angle += 0.01
         
         for meshRenderer in Scene.sharedInstance.getMeshRenderers() {
             if let entity = meshRenderer.entity as? Entity {
-                let modelMatrix = entity.transform.matrix.rotate(angle, 0, 1, 0)
+                let modelMatrix = entity.transform.matrix
                 let modelViewMatrix = viewMatrix * modelMatrix
                 let mvpMatrix = projectionMatrix * modelViewMatrix
 

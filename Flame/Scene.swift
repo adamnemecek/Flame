@@ -25,13 +25,16 @@ class Scene {
         let triangle = Entity()
         triangle.name = "Triangle"
         triangle.addComponent(TriangleRenderer())
+        triangle.transform.matrix = float4x4.makeTranslation(-1, 0, 0)
+        triangle.addComponent(Spinner(speed: 2.0))
         entities.append(triangle)
-        
-        let triangle2 = Entity()
-        triangle2.name = "Triangle2"
-        triangle2.addComponent(TriangleRenderer(color1: float3(0, 1, 1), color2: float3(1, 0, 1), color3: float3(1, 1, 0)))
-        triangle2.transform.matrix = float4x4.makeTranslation(0.5, 0, -0.3).rotate(0.5, 0, 1, 0)
-        entities.append(triangle2)
+
+        let cube = Entity()
+        cube.name = "Cube"
+        cube.addComponent(CubeRenderer())
+        cube.transform.matrix = float4x4.makeTranslation(1, 0, 0)
+        cube.addComponent(Spinner(speed: 0.75))
+        entities.append(cube)
     }
     
     // MARK: - Public API
