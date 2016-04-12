@@ -18,22 +18,40 @@ class Scene {
     // MARK: - Properties
     
     var entities = [Entity]()
+    
+    var camera: Camera? {
+        for entity in entities {
+            for component in entity.components {
+                if let cameraComponent = component as? Camera {
+                    return cameraComponent
+                }
+            }
+        }
+        
+        return nil
+    }
 
     // MARK: - Init & deinit
     
     func setup() {
+        let camera = Entity()
+        camera.name = "Camera"
+        camera.addComponent(Camera())
+        camera.transform.position = float3(0, 0, 2)
+        entities.append(camera)
+
         let triangle = Entity()
         triangle.name = "Triangle"
         triangle.addComponent(TriangleRenderer())
-        triangle.transform.matrix = float4x4.makeTranslation(-1, 0, 0)
-        triangle.addComponent(Spinner(speed: 2.0))
+        triangle.transform.position = float3(-1, 0, 0)
+        triangle.addComponent(Spinner(speed: 1.0))
         entities.append(triangle)
 
         let cube = Entity()
         cube.name = "Cube"
         cube.addComponent(CubeRenderer())
-        cube.transform.matrix = float4x4.makeTranslation(1, 0, 0)
-        cube.addComponent(Spinner(speed: 0.75))
+        cube.transform.position = float3(1, 0, 0)
+        cube.addComponent(Spinner(speed: 0.45))
         entities.append(cube)
     }
     

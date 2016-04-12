@@ -23,5 +23,5 @@ class ViewController: NSViewController {
             self.metalView = metalView
         }
     }
-    
+
 }

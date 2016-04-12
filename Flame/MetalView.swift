@@ -20,13 +20,13 @@ class MetalView: MTKView {
 
         let framebufferSize = convertSizeToBacking(frame.size)
         Swift.print("Frame buffer size: \(Int(framebufferSize.width))x\(Int(framebufferSize.height))")
-            
+        
         framebufferOnly = false
         colorPixelFormat = .BGRA8Unorm
         sampleCount = 1
         preferredFramesPerSecond = 60
         autoResizeDrawable = true
-        
+    
         Renderer.sharedInstance.setup(framebufferSize)
     }
     

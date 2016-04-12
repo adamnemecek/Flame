@@ -22,7 +22,7 @@ class Spinner : GKComponent {
         super.updateWithDeltaTime(seconds)
         
         if let owner = entity as? Entity {
-            owner.transform.matrix = owner.transform.matrix.rotate(speed * Float(seconds), 0, 1, 0)
+            owner.transform.rotation.y += speed * Float(seconds)
         }
         
     }

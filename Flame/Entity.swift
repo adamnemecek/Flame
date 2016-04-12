@@ -21,5 +21,25 @@ class Entity : GKEntity {
 }
 
 class Transform : GKComponent {
-    var matrix = float4x4.identity()
+    
+    var position: float3
+    var rotation: float3
+    var scale: float3
+    
+    var modelMatrix: float4x4 {
+        return float4x4
+            .makeScale(scale.x, scale.y, scale.z)
+            .translate(position.x, position.y, position.z)
+            .rotate(rotation.x, 1, 0, 0)
+            .rotate(rotation.y, 0, 1, 0)
+            .rotate(rotation.z, 0, 0, 1)
+    }
+    
+    override init() {
+        position = float3(0, 0, 0)
+        rotation = float3(0, 0, 0)
+        scale = float3(1, 1, 1)
+        super.init()
+    }
+    
 }

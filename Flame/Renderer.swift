@@ -14,8 +14,6 @@ class Renderer {
     
     // MARK: - Properties
 
-    var angle: Float = 0.0
-    
     var device: MTLDevice!
     
     private var commandQueue: MTLCommandQueue!
@@ -36,6 +34,8 @@ class Renderer {
     // MARK: - Public API
 
     func render(drawable: CAMetalDrawable) {
+        guard let camera = Scene.sharedInstance.camera else { return }
+        
         let renderPass = MTLRenderPassDescriptor()
 
         renderPass.colorAttachments[0].texture = drawable.texture
@@ -61,17 +61,15 @@ class Renderer {
             commandEncoder.setDepthStencilState(depthStencilState)
         }
 
-        let aspect = Float(drawable.texture.width) / Float(drawable.texture.height)
-        let fovY: Float = 20.0
+        camera.aspect = Float(drawable.texture.width) / Float(drawable.texture.height)
         
-        let viewMatrix = float4x4.identity().translate(0, 0, -3)
-        let projectionMatrix = float4x4.makePerspective(fovY, aspect, 0.1, 100)
+        let viewMatrix = camera.viewMatrix
+        let projectionMatrix = camera.projectionMatrix
         
         for meshRenderer in Scene.sharedInstance.getMeshRenderers() {
             if let entity = meshRenderer.entity as? Entity {
-                let modelMatrix = entity.transform.matrix
-                let modelViewMatrix = viewMatrix * modelMatrix
-                let mvpMatrix = projectionMatrix * modelViewMatrix
+                let modelMatrix = entity.transform.modelMatrix
+                let mvpMatrix = projectionMatrix * viewMatrix * modelMatrix
 
                 let uniformBuffer = device.newBufferWithLength(sizeof(Float) * 16, options: .CPUCacheModeDefaultCache)
                 let uniformBufferPtr = uniformBuffer.contents()
