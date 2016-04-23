@@ -21,5 +21,13 @@ class WindowController : NSWindowController {
         
         window?.title = "Flame 🔥 \(appVersion)"
     }
+
+    override func keyDown(event: NSEvent) {
+        Input.sharedInstance.registerKeyDown(event.keyCode)
+    }
     
+    override func keyUp(event: NSEvent) {
+        Input.sharedInstance.registerKeyUp(event.keyCode)
+    }
+   
 }

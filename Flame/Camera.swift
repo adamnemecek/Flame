@@ -39,4 +39,27 @@ class Camera : GKComponent {
         super.init()
     }
     
+    override func updateWithDeltaTime(seconds: NSTimeInterval) {
+        guard let owner = self.entity as? Entity else { return }
+ 
+        let speed = 1.0
+        
+        if Input.sharedInstance.isKeyDown(13) {
+            owner.transform.position.z -= Float(speed * seconds)
+        }
+        
+        if Input.sharedInstance.isKeyDown(1) {
+            owner.transform.position.z += Float(speed * seconds)
+        }
+        
+        if Input.sharedInstance.isKeyDown(124) {
+            owner.transform.rotation.y -= Float(speed * seconds)
+        }
+
+        if Input.sharedInstance.isKeyDown(123) {
+            owner.transform.rotation.y += Float(speed * seconds)
+        }
+
+    }
+    
 }
