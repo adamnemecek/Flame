@@ -37,7 +37,7 @@ class Scene {
         let camera = Entity()
         camera.name = "Camera"
         camera.addComponent(Camera())
-        camera.transform.position = float3(0, 0, 2)
+        camera.transform.position = float3(0, 0, 3)
         entities.append(camera)
 
         let triangle = Entity()
