@@ -6,16 +6,14 @@
 //  Copyright © 2016 Kenny Deriemaeker. All rights reserved.
 //
 
-import GameplayKit
 import MetalKit
-import simd
 
-class MeshRenderer : GKComponent {
+class MeshRenderer : Component {
 
     var vertexBuffer: MTLBuffer?
     var indexBuffer: MTLBuffer?
     
-    override init() {
+    required init() {
         super.init()
         generateBuffers()
     }

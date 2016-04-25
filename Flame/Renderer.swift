@@ -67,13 +67,13 @@ class Renderer {
         let projectionMatrix = camera.projectionMatrix
         
         for meshRenderer in Scene.sharedInstance.getMeshRenderers() {
-            if let entity = meshRenderer.entity as? Entity {
-                let modelMatrix = entity.transform.modelMatrix
+            if let entity = meshRenderer.entity {
+                let modelMatrix = entity.transform.matrix
                 let mvpMatrix = projectionMatrix * viewMatrix * modelMatrix
 
                 let uniformBuffer = device.newBufferWithLength(sizeof(Float) * 16, options: .CPUCacheModeDefaultCache)
                 let uniformBufferPtr = uniformBuffer.contents()
-                memcpy(uniformBufferPtr, mvpMatrix.decompose(), sizeof(Float) * 16)
+                memcpy(uniformBufferPtr, mvpMatrix.toArray(), sizeof(Float) * 16)
                 
                 commandEncoder.setVertexBuffer(uniformBuffer, offset: 0, atIndex: 1)
                 

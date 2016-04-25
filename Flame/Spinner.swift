@@ -6,25 +6,20 @@
 //  Copyright © 2016 Kenny Deriemaeker. All rights reserved.
 //
 
-import GameplayKit
-import simd
+import Foundation
 
-class Spinner : GKComponent {
+class Spinner : Component {
 
     var speed: Float = 0.0
     
-    init(speed: Float) {
-        self.speed = speed
-        super.init()
+    required init() {
     }
     
-    override func updateWithDeltaTime(seconds: NSTimeInterval) {
-        super.updateWithDeltaTime(seconds)
+    override func update(seconds: NSTimeInterval) {
+        super.update(seconds)
+        guard let entity = entity else { return }
         
-        if let owner = entity as? Entity {
-            owner.transform.rotation.y += speed * Float(seconds)
-        }
-        
+        entity.transform.rotation.y += speed * Float(seconds)
     }
     
 }

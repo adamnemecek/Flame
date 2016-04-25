@@ -6,40 +6,40 @@
 //  Copyright © 2016 Kenny Deriemaeker. All rights reserved.
 //
 
-import GameplayKit
+import Foundation
 
-class Entity : GKEntity {
+class Entity {
     
     var name: String = "UnnamedEntity"
     var transform: Transform
-    
-    override init() {
-        self.transform = Transform()
-        super.init()
-    }
-    
-}
 
-class Transform : GKComponent {
+    private var components = [Component]()
     
-    var position: float3
-    var rotation: float3
-    var scale: float3
-    
-    var modelMatrix: float4x4 {
-        return float4x4
-            .makeScale(scale.x, scale.y, scale.z)
-            .translate(position.x, position.y, position.z)
-            .rotate(rotation.x, 1, 0, 0)
-            .rotate(rotation.y, 0, 1, 0)
-            .rotate(rotation.z, 0, 0, 1)
+    init() {
+        self.transform = Transform()
     }
     
-    override init() {
-        position = float3(0, 0, 0)
-        rotation = float3(0, 0, 0)
-        scale = float3(1, 1, 1)
-        super.init()
+    func addComponent<T where T: Component>(type: T.Type) -> T {
+        let component = T()
+        component.entity = self
+        
+        components.append(component)
+        
+        return component
+    }
+
+    func getComponents<T where T: Component>(type: T.Type) -> [T] {
+        return components.filter { $0 is T } as! [T]
+    }
+    
+    func getComponent<T where T: Component>(type: T.Type) -> T? {
+        return getComponents(type).first
+    }
+    
+    func update(deltaTime: NSTimeInterval) {
+        for component in components {
+            component.update(deltaTime)
+        }
     }
     
 }

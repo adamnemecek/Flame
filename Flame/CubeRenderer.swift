@@ -6,7 +6,6 @@
 //  Copyright © 2016 Kenny Deriemaeker. All rights reserved.
 //
 
-import simd
 import MetalKit
 
 class CubeRenderer : MeshRenderer {
@@ -17,15 +16,15 @@ class CubeRenderer : MeshRenderer {
     override func generateBuffers() {
         let device = Renderer.sharedInstance.device
         
-        let a = Vertex(position: float4(-0.5, 0.5, 0.5, 1), color: float4(1, 0, 0, 1))
-        let b = Vertex(position: float4(-0.5, -0.5, 0.5, 1), color: float4(0, 1, 0, 1))
-        let c = Vertex(position: float4(0.5, -0.5, 0.5, 1), color: float4(0, 0, 1, 1))
-        let d = Vertex(position: float4(0.5, 0.5, 0.5, 1), color: float4(1, 1, 0, 1))
+        let a = Vertex(position: Vector4(-0.5, 0.5, 0.5, 1), color: Vector4(1, 0, 0, 1))
+        let b = Vertex(position: Vector4(-0.5, -0.5, 0.5, 1), color: Vector4(0, 1, 0, 1))
+        let c = Vertex(position: Vector4(0.5, -0.5, 0.5, 1), color: Vector4(0, 0, 1, 1))
+        let d = Vertex(position: Vector4(0.5, 0.5, 0.5, 1), color: Vector4(1, 1, 0, 1))
 
-        let q = Vertex(position: float4(-0.5, 0.5, -0.5, 1), color: float4(0, 1, 1, 1))
-        let r = Vertex(position: float4(0.5, 0.5, -0.5, 1), color: float4(1, 0, 1, 1))
-        let s = Vertex(position: float4(-0.5, -0.5, -0.5, 1), color: float4(0, 1, 0, 1))
-        let t = Vertex(position: float4(0.5, -0.5, -0.5, 1), color: float4(1, 0, 0, 1))
+        let q = Vertex(position: Vector4(-0.5, 0.5, -0.5, 1), color: Vector4(0, 1, 1, 1))
+        let r = Vertex(position: Vector4(0.5, 0.5, -0.5, 1), color: Vector4(1, 0, 1, 1))
+        let s = Vertex(position: Vector4(-0.5, -0.5, -0.5, 1), color: Vector4(0, 1, 0, 1))
+        let t = Vertex(position: Vector4(0.5, -0.5, -0.5, 1), color: Vector4(1, 0, 0, 1))
 
         let vertices = [a, b, c, d, q, r, s, t]
         

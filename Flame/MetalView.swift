@@ -7,7 +7,6 @@
 //
 
 import MetalKit
-import simd
 
 class MetalView: MTKView {
 

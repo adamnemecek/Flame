@@ -7,9 +7,7 @@
 //
 
 import Foundation
-import GameplayKit
 import MetalKit
-import simd
 
 class Scene {
     
@@ -21,10 +19,8 @@ class Scene {
     
     var camera: Camera? {
         for entity in entities {
-            for component in entity.components {
-                if let cameraComponent = component as? Camera {
-                    return cameraComponent
-                }
+            if let camera = entity.getComponent(Camera) {
+                return camera
             }
         }
         
@@ -35,23 +31,30 @@ class Scene {
     
     func setup() {
         let camera = Entity()
+        
         camera.name = "Camera"
-        camera.addComponent(Camera())
-        camera.transform.position = float3(0, 0, 3)
+        camera.addComponent(Camera)
+        camera.transform.position = Vector3(0, 0, 3)
         entities.append(camera)
 
         let triangle = Entity()
         triangle.name = "Triangle"
-        triangle.addComponent(TriangleRenderer())
-        triangle.transform.position = float3(-1, 0, 0)
-        triangle.addComponent(Spinner(speed: 1.0))
+        triangle.addComponent(TriangleRenderer)
+        triangle.transform.position = Vector3(-1, 0, 0)
+        
+        let tSpinner = triangle.addComponent(Spinner)
+        tSpinner.speed = 1.0
+        
         entities.append(triangle)
 
         let cube = Entity()
         cube.name = "Cube"
-        cube.addComponent(CubeRenderer())
-        cube.transform.position = float3(1, 0, 0)
-        cube.addComponent(Spinner(speed: 0.45))
+        cube.addComponent(CubeRenderer)
+        cube.transform.position = Vector3(1, 0, 0)
+
+        let cSpinner = cube.addComponent(Spinner)
+        cSpinner.speed = 0.45
+
         entities.append(cube)
     }
     
@@ -59,7 +62,7 @@ class Scene {
     
     func update(deltaTime: NSTimeInterval) {
         for entity in entities {
-            entity.updateWithDeltaTime(deltaTime)
+            entity.update(deltaTime)
         }
     }
 
@@ -67,10 +70,8 @@ class Scene {
         var renderers = [MeshRenderer]()
         
         for entity in entities {
-            for component in entity.components {
-                if let renderer = component as? MeshRenderer {
-                    renderers.append(renderer)
-                }
+            for renderer in entity.getComponents(MeshRenderer) {
+                renderers.append(renderer)
             }
         }
         

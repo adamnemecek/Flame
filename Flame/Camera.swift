@@ -6,32 +6,30 @@
 //  Copyright © 2016 Kenny Deriemaeker. All rights reserved.
 //
 
-import GameplayKit
-import simd
+import Foundation
 
-class Camera : GKComponent {
+class Camera : Component {
     
     var fov: Float
     var near: Float
     var far: Float
     var aspect: Float
     
-    var viewMatrix: float4x4 {
-        guard let owner = self.entity as? Entity else { return float4x4.identity() }
+    var viewMatrix: Matrix4 {
+        guard let entity = entity else { return Matrix4.Identity }
         
-        return float4x4.identity()
-            .rotate(-owner.transform.rotation.x, 1, 0, 0)
-            .rotate(-owner.transform.rotation.y, 0, 1, 0)
-            .rotate(-owner.transform.rotation.z, 0, 0, 1)
-            .translate(-owner.transform.position.x, -owner.transform.position.y, -owner.transform.position.z)
+        return Matrix4(rotation: Vector4(1, 0, 0, -entity.transform.rotation.x))
+            * Matrix4(rotation: Vector4(0, 1, 0, -entity.transform.rotation.y))
+            * Matrix4(rotation: Vector4(0, 0, 1, -entity.transform.rotation.z))
+            * Matrix4(translation: -entity.transform.position)
     }
     
-    var projectionMatrix: float4x4 {
-        return float4x4.makePerspective(fov, aspect, near, far)
+    var projectionMatrix: Matrix4 {
+        return Matrix4(fovx: fov, aspect: aspect, near: near, far: far)
     }
     
-    override init() {
-        fov = 20.0
+    required init() {
+        fov = 90 * Scalar.RadiansPerDegree
         near = 0.1
         far = 256.0
         aspect = 0.75
@@ -39,25 +37,25 @@ class Camera : GKComponent {
         super.init()
     }
     
-    override func updateWithDeltaTime(seconds: NSTimeInterval) {
-        guard let owner = self.entity as? Entity else { return }
- 
+    override func update(seconds: NSTimeInterval) {
+        guard let entity = entity else { return }
+
         let speed = 1.0
         
         if Input.sharedInstance.isKeyDown(13) {
-            owner.transform.position.z -= Float(speed * seconds)
+            entity.transform.position.z -= Float(speed * seconds)
         }
         
         if Input.sharedInstance.isKeyDown(1) {
-            owner.transform.position.z += Float(speed * seconds)
+            entity.transform.position.z += Float(speed * seconds)
         }
         
         if Input.sharedInstance.isKeyDown(124) {
-            owner.transform.rotation.y -= Float(speed * seconds)
+            entity.transform.rotation.y -= Float(speed * seconds)
         }
 
         if Input.sharedInstance.isKeyDown(123) {
-            owner.transform.rotation.y += Float(speed * seconds)
+            entity.transform.rotation.y += Float(speed * seconds)
         }
 
     }
