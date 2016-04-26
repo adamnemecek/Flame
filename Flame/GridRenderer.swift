@@ -39,7 +39,7 @@ class GridRenderer : MeshRenderer {
         
         var vertices = [Vertex]()
         
-        for i in 0 ..< subdivisions {
+        for i in 0 ... subdivisions {
             vertices.append(Vertex(position: Vector4(-reach, 0, -reach + Float(i) * tileSize, 1), color: color))
             vertices.append(Vertex(position: Vector4(reach, 0, -reach + Float(i) * tileSize, 1), color: color))
             vertices.append(Vertex(position: Vector4(-reach + Float(i) * tileSize, 0, -reach, 1), color: color))
