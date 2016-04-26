@@ -34,13 +34,22 @@ class Scene {
         
         camera.name = "Camera"
         camera.addComponent(Camera)
-        camera.transform.position = Vector3(0, 0, 3)
+        camera.transform.position = Vector3(0, 0.7, 3)
         entities.append(camera)
 
+        let grid = Entity()
+        grid.name = "Grid"
+
+        let gridComponent = grid.addComponent(GridRenderer)
+        gridComponent.side = 32
+        gridComponent.color = Vector4(0, 0.5, 0.25, 1)
+        
+        entities.append(grid)
+        
         let triangle = Entity()
         triangle.name = "Triangle"
         triangle.addComponent(TriangleRenderer)
-        triangle.transform.position = Vector3(-1, 0, 0)
+        triangle.transform.position = Vector3(-1, 0.5, 0)
         
         let tSpinner = triangle.addComponent(Spinner)
         tSpinner.speed = 1.0
@@ -50,7 +59,7 @@ class Scene {
         let cube = Entity()
         cube.name = "Cube"
         cube.addComponent(CubeRenderer)
-        cube.transform.position = Vector3(1, 0, 0)
+        cube.transform.position = Vector3(1, 0.5, 0)
 
         let cSpinner = cube.addComponent(Spinner)
         cSpinner.speed = 0.45

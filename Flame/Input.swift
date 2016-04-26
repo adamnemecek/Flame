@@ -15,7 +15,6 @@ class Input {
     private var pressedKeys = Set<UInt16>()
     
     func registerKeyDown(keyCode: UInt16) {
-        print("keydown \(keyCode)")
         pressedKeys.insert(keyCode)
     }
     

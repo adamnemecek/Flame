@@ -25,11 +25,11 @@ class Camera : Component {
     }
     
     var projectionMatrix: Matrix4 {
-        return Matrix4(fovx: fov, aspect: aspect, near: near, far: far)
+        return Matrix4(fovx: fov * Scalar.RadiansPerDegree, aspect: aspect, near: near, far: far)
     }
     
     required init() {
-        fov = 90 * Scalar.RadiansPerDegree
+        fov = 90
         near = 0.1
         far = 256.0
         aspect = 0.75
@@ -40,7 +40,7 @@ class Camera : Component {
     override func update(seconds: NSTimeInterval) {
         guard let entity = entity else { return }
 
-        let speed = 1.0
+        let speed = 2.0
         
         if Input.sharedInstance.isKeyDown(13) {
             entity.transform.position.z -= Float(speed * seconds)
