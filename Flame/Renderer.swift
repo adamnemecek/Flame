@@ -39,7 +39,7 @@ class Renderer {
         let renderPass = MTLRenderPassDescriptor()
 
         renderPass.colorAttachments[0].texture = drawable.texture
-        renderPass.colorAttachments[0].clearColor = MTLClearColor(red: 0.15, green: 0.16, blue: 0.19, alpha: 0)
+        renderPass.colorAttachments[0].clearColor = MTLClearColor(red: 0.1, green: 0.1, blue: 0.1, alpha: 0)
         renderPass.colorAttachments[0].loadAction = .Clear
         renderPass.colorAttachments[0].storeAction = .Store
         

@@ -39,23 +39,44 @@ class Camera : Component {
     
     override func update(seconds: NSTimeInterval) {
         guard let entity = entity else { return }
-
-        let speed = 2.0
+        let speed: Float = 2.0 * Float(seconds)
         
+        let viewMatrix = self.viewMatrix.toArray()
+        
+        let up = Vector3(viewMatrix[1], viewMatrix[5], viewMatrix[9])
+        let forward = Vector3(viewMatrix[2], viewMatrix[6], viewMatrix[10])
+        let right = Vector3(viewMatrix[0], viewMatrix[4], viewMatrix[8])
+
+        if Input.sharedInstance.isKeyDown(0) {
+            entity.transform.position = entity.transform.position - (right * speed)
+        }
+        
+        if Input.sharedInstance.isKeyDown(2) {
+            entity.transform.position = entity.transform.position + (right * speed)
+        }
+
         if Input.sharedInstance.isKeyDown(13) {
-            entity.transform.position.z -= Float(speed * seconds)
+            entity.transform.position = entity.transform.position - (forward * speed)
         }
         
         if Input.sharedInstance.isKeyDown(1) {
-            entity.transform.position.z += Float(speed * seconds)
+            entity.transform.position = entity.transform.position + (forward * speed)
         }
-        
+
+        if Input.sharedInstance.isKeyDown(49) {
+            entity.transform.position = entity.transform.position + (up * speed)
+        }
+
+        if Input.sharedInstance.isKeyDown(8) {
+            entity.transform.position = entity.transform.position - (up * speed)
+        }
+
         if Input.sharedInstance.isKeyDown(124) {
-            entity.transform.rotation.y -= Float(speed * seconds)
+            entity.transform.rotation.y -= speed
         }
 
         if Input.sharedInstance.isKeyDown(123) {
-            entity.transform.rotation.y += Float(speed * seconds)
+            entity.transform.rotation.y += speed
         }
 
     }
