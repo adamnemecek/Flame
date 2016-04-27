@@ -44,6 +44,7 @@
 /* Begin PBXFileReference section */
 		B9104BD11CBBFD0800F078BF /* Camera.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Camera.swift; sourceTree = "<group>"; };
 		B91EA1661CAA5D6100BFEC30 /* TriangleRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TriangleRenderer.swift; sourceTree = "<group>"; };
+		B92B8C9F1CCFC71B00A85DEB /* BSP.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = BSP.playground; sourceTree = "<group>"; };
 		B92E89FD1CA85E4500F8768A /* Flame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Flame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B92E8A001CA85E4500F8768A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B92E8A021CA85E4500F8768A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -116,6 +117,7 @@
 				B92E8A261CA97A8000F8768A /* Utilities */,
 				B92E8A231CA956C700F8768A /* Shaders */,
 				B92E8A241CA956D000F8768A /* Supporting Files */,
+				B92B8C9F1CCFC71B00A85DEB /* BSP.playground */,
 			);
 			path = Flame;
 			sourceTree = "<group>";
