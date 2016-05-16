@@ -20,8 +20,13 @@
 		B92F01661CB806B9003AFFC7 /* Spinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = B92F01651CB806B9003AFFC7 /* Spinner.swift */; };
 		B93420911CB77FBF00CE8193 /* CubeRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B93420901CB77FBF00CE8193 /* CubeRenderer.swift */; };
 		B9354FBC1CD6609400C8FB28 /* QuakeBSP.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9354FBB1CD6609400C8FB28 /* QuakeBSP.swift */; };
-		B9354FBE1CD6625200C8FB28 /* QuakeEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9354FBD1CD6625200C8FB28 /* QuakeEntity.swift */; };
+		B9354FBE1CD6625200C8FB28 /* QuakeTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9354FBD1CD6625200C8FB28 /* QuakeTypes.swift */; };
 		B9354FC01CD6630E00C8FB28 /* testmap.bsp in Resources */ = {isa = PBXBuildFile; fileRef = B9354FBF1CD6630E00C8FB28 /* testmap.bsp */; };
+		B96EF4A51CD90EFC0038A0A1 /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B96EF4A41CD90EFC0038A0A1 /* Metal.framework */; };
+		B96EF4A71CD90F2E0038A0A1 /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B96EF4A61CD90F2E0038A0A1 /* MetalKit.framework */; };
+		B99049D91CE8FAFD00372FC3 /* QuakeMapRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B99049D81CE8FAFD00372FC3 /* QuakeMapRenderer.swift */; };
+		B99049DB1CE905AC00372FC3 /* blockout.bsp in Resources */ = {isa = PBXBuildFile; fileRef = B99049DA1CE905AC00372FC3 /* blockout.bsp */; };
+		B99049DD1CE90CEF00372FC3 /* e1m1.bsp in Resources */ = {isa = PBXBuildFile; fileRef = B99049DC1CE90CEF00372FC3 /* e1m1.bsp */; };
 		B996FD6C1CCCB9D30050C1CE /* Input.swift in Sources */ = {isa = PBXBuildFile; fileRef = B996FD6B1CCCB9D30050C1CE /* Input.swift */; };
 		B9A9EC981CCE7D2100A7645B /* VectorMath.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9A9EC971CCE7D2100A7645B /* VectorMath.swift */; };
 		B9A9EC9C1CCE7E6F00A7645B /* Component.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9A9EC9B1CCE7E6F00A7645B /* Component.swift */; };
@@ -63,8 +68,13 @@
 		B92F01651CB806B9003AFFC7 /* Spinner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Spinner.swift; sourceTree = "<group>"; };
 		B93420901CB77FBF00CE8193 /* CubeRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CubeRenderer.swift; sourceTree = "<group>"; };
 		B9354FBB1CD6609400C8FB28 /* QuakeBSP.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuakeBSP.swift; sourceTree = "<group>"; };
-		B9354FBD1CD6625200C8FB28 /* QuakeEntity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuakeEntity.swift; sourceTree = "<group>"; };
+		B9354FBD1CD6625200C8FB28 /* QuakeTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuakeTypes.swift; sourceTree = "<group>"; };
 		B9354FBF1CD6630E00C8FB28 /* testmap.bsp */ = {isa = PBXFileReference; lastKnownFileType = file; name = testmap.bsp; path = BSP.playground/Resources/testmap.bsp; sourceTree = "<group>"; };
+		B96EF4A41CD90EFC0038A0A1 /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
+		B96EF4A61CD90F2E0038A0A1 /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
+		B99049D81CE8FAFD00372FC3 /* QuakeMapRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuakeMapRenderer.swift; sourceTree = "<group>"; };
+		B99049DA1CE905AC00372FC3 /* blockout.bsp */ = {isa = PBXFileReference; lastKnownFileType = file; path = blockout.bsp; sourceTree = "<group>"; };
+		B99049DC1CE90CEF00372FC3 /* e1m1.bsp */ = {isa = PBXFileReference; lastKnownFileType = file; path = e1m1.bsp; sourceTree = "<group>"; };
 		B996FD6B1CCCB9D30050C1CE /* Input.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Input.swift; sourceTree = "<group>"; };
 		B9A9EC971CCE7D2100A7645B /* VectorMath.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VectorMath.swift; sourceTree = "<group>"; };
 		B9A9EC9B1CCE7E6F00A7645B /* Component.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Component.swift; sourceTree = "<group>"; };
@@ -82,6 +92,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B96EF4A71CD90F2E0038A0A1 /* MetalKit.framework in Frameworks */,
+				B96EF4A51CD90EFC0038A0A1 /* Metal.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -100,6 +112,7 @@
 			children = (
 				B92E89FF1CA85E4500F8768A /* Flame */,
 				B92E8A111CA85E4500F8768A /* FlameTests */,
+				DAA573FF1CE64CDB00E21D2E /* Frameworks */,
 				B92E89FE1CA85E4500F8768A /* Products */,
 			);
 			sourceTree = "<group>";
@@ -148,6 +161,8 @@
 		B92E8A241CA956D000F8768A /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				B99049DC1CE90CEF00372FC3 /* e1m1.bsp */,
+				B99049DA1CE905AC00372FC3 /* blockout.bsp */,
 				B92E8A041CA85E4500F8768A /* Assets.xcassets */,
 				B9354FBF1CD6630E00C8FB28 /* testmap.bsp */,
 				B92E8A091CA85E4500F8768A /* Info.plist */,
@@ -178,7 +193,8 @@
 			isa = PBXGroup;
 			children = (
 				B9354FBB1CD6609400C8FB28 /* QuakeBSP.swift */,
-				B9354FBD1CD6625200C8FB28 /* QuakeEntity.swift */,
+				B9354FBD1CD6625200C8FB28 /* QuakeTypes.swift */,
+				B99049D81CE8FAFD00372FC3 /* QuakeMapRenderer.swift */,
 			);
 			name = Quake;
 			sourceTree = "<group>";
@@ -225,6 +241,15 @@
 				B9354FBA1CD6607A00C8FB28 /* Quake */,
 			);
 			name = Engine;
+			sourceTree = "<group>";
+		};
+		DAA573FF1CE64CDB00E21D2E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B96EF4A61CD90F2E0038A0A1 /* MetalKit.framework */,
+				B96EF4A41CD90EFC0038A0A1 /* Metal.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -310,6 +335,8 @@
 			files = (
 				B92E8A051CA85E4500F8768A /* Assets.xcassets in Resources */,
 				B92E8A081CA85E4500F8768A /* Main.storyboard in Resources */,
+				B99049DD1CE90CEF00372FC3 /* e1m1.bsp in Resources */,
+				B99049DB1CE905AC00372FC3 /* blockout.bsp in Resources */,
 				B9354FC01CD6630E00C8FB28 /* testmap.bsp in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -340,7 +367,8 @@
 				B9A9EC9C1CCE7E6F00A7645B /* Component.swift in Sources */,
 				B9A9EC9E1CCE7EAA00A7645B /* Transform.swift in Sources */,
 				B92E8A031CA85E4500F8768A /* ViewController.swift in Sources */,
-				B9354FBE1CD6625200C8FB28 /* QuakeEntity.swift in Sources */,
+				B9354FBE1CD6625200C8FB28 /* QuakeTypes.swift in Sources */,
+				B99049D91CE8FAFD00372FC3 /* QuakeMapRenderer.swift in Sources */,
 				B9D7965B1CB07A1B002FFDF6 /* Renderer.swift in Sources */,
 				B9A9EC981CCE7D2100A7645B /* VectorMath.swift in Sources */,
 				B92E8A011CA85E4500F8768A /* AppDelegate.swift in Sources */,

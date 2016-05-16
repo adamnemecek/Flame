@@ -15,11 +15,11 @@ class Transform : Component {
     var scale: Vector3
 
     var matrix: Matrix4 {
-        return Matrix4(scale: scale)
-            * Matrix4(translation: position)
+        return Matrix4(translation: position)
             * Matrix4(rotation: Vector4(1, 0, 0, rotation.x))
             * Matrix4(rotation: Vector4(0, 1, 0, rotation.y))
             * Matrix4(rotation: Vector4(0, 0, 1, rotation.z))
+            * Matrix4(scale: scale)
     }
     
     required init() {

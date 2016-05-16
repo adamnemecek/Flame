@@ -12,6 +12,9 @@ class QuakeBSP {
 
     var version: Int!
     var entities: [QuakeEntity]!
+    var planes: [QuakePlane]!
+    var vertices: [Vector3]!
+    var edges: [QuakeEdge]!
     
     // MARK: - Public API
     
@@ -22,6 +25,9 @@ class QuakeBSP {
         
         self.version = header.version
         self.entities = parseEntities(data, lump: header.entities)
+        self.planes = parsePlanes(data, lump: header.planes)
+        self.vertices = parseVertices(data, lump: header.vertices)
+        self.edges = parseEdges(data, lump: header.edges)
     }
     
     // MARK: - Private types
@@ -57,8 +63,8 @@ class QuakeBSP {
         
         header.version = readInt(data, offset: 0)
         header.entities = readLump(data, index: 0)
-        header.miptex = readLump(data, index: 1)
-        header.planes = readLump(data, index: 2)
+        header.planes = readLump(data, index: 1)
+        header.miptex = readLump(data, index: 2)
         header.vertices = readLump(data, index: 3)
         header.visilist = readLump(data, index: 4)
         header.nodes = readLump(data, index: 5)
@@ -143,6 +149,56 @@ class QuakeBSP {
             return [QuakeEntity]()
         }
     }
+
+    private func parsePlanes(data: NSData, lump: Lump) -> [QuakePlane] {
+        var result = [QuakePlane]()
+
+        let numPlanes = lump.size / 20
+
+        for planeIndex in 0 ..< numPlanes {
+            let offset = lump.offset + planeIndex * 20
+            
+            let normal = Vector3(readFloat(data, offset: offset), readFloat(data, offset: offset + 4), readFloat(data, offset: offset + 8))
+            let distance = readFloat(data, offset: offset + 12)
+            let type = readInt(data, offset: offset + 16)
+            
+            result.append(QuakePlane(normal: normal, distance: distance, type: QuakePlaneType(rawValue: type)!))
+        }
+        
+        return result
+    }
+
+    private func parseVertices(data: NSData, lump: Lump) -> [Vector3] {
+        var result = [Vector3]()
+        
+        let numVertices = lump.size / 12
+        
+        for vertIndex in 0 ..< numVertices {
+            let offset = lump.offset + vertIndex * 12
+            let vertex = Vector3(readFloat(data, offset: offset), readFloat(data, offset: offset + 4), readFloat(data, offset: offset + 8))
+            result.append(vertex)
+        }
+        
+        return result
+    }
+
+    private func parseEdges(data: NSData, lump: Lump) -> [QuakeEdge] {
+        var result = [QuakeEdge]()
+        
+        let numEdges = lump.size / 4
+        
+        for edgeIndex in 0 ..< numEdges {
+            let offset = lump.offset + edgeIndex * 4
+            let startVertexIndex = readShort(data, offset: offset)
+            let endVertexIndex = readShort(data, offset: offset + 2)
+
+            let edge = QuakeEdge(startVertexIndex: startVertexIndex, endVertexIndex: endVertexIndex)
+            
+            result.append(edge)
+        }
+        
+        return result
+    }
     
     private func readInt(data: NSData, offset: Int) -> Int {
         let range = NSRange(location: offset, length: sizeof(UInt32))
@@ -150,6 +206,22 @@ class QuakeBSP {
         
         data.getBytes(&buffer, range: range)
         return Int(buffer[0].littleEndian)
+    }
+    
+    private func readShort(data: NSData, offset: Int) -> Int {
+        let range = NSRange(location: offset, length: sizeof(UInt32))
+        var buffer = [UInt16](count: 1, repeatedValue: 0)
+        
+        data.getBytes(&buffer, range: range)
+        return Int(buffer[0].littleEndian)
+    }
+    
+    private func readFloat(data: NSData, offset: Int) -> Float {
+        let range = NSRange(location: offset, length: sizeof(Float32))
+        var buffer = [Float32](count: 1, repeatedValue: 0)
+        
+        data.getBytes(&buffer, range: range)
+        return Float(buffer[0])
     }
     
     private func readString(data: NSData, offset: Int, size: Int) -> String {
@@ -166,7 +238,7 @@ class QuakeBSP {
     }
 
     private func readLump(data: NSData, index: Int) -> Lump {
-        let offset = sizeof(UInt32) * (4 * index + 1)
+        let offset = sizeof(UInt32) * (1 + index * 2)
         let range = NSRange(location: offset, length: sizeof(UInt32) * 2)
         var buffer = [UInt32](count: 2, repeatedValue: 0)
         

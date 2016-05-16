@@ -34,33 +34,64 @@ class Scene {
         
         camera.name = "Camera"
         camera.addComponent(Camera)
-        camera.transform.position = Vector3(0, 0.7, 3)
+        camera.transform.position = Vector3(0, 64, 0)
         entities.append(camera)
 
         let grid = Entity()
         grid.name = "Grid"
-
         let gridComponent = grid.addComponent(GridRenderer)
         gridComponent.side = 32
         gridComponent.color = Vector4(0, 0.25, 0, 1)
-        
         entities.append(grid)
-        
-        let triangle = Entity()
-        triangle.name = "Triangle"
-        triangle.addComponent(TriangleRenderer)
-        triangle.transform.position = Vector3(-1, 0.5, 0)
-        
-        let tSpinner = triangle.addComponent(Spinner)
-        tSpinner.speed = 1.0
-        
-        entities.append(triangle)
 
-        let cube = Entity()
-        cube.name = "Cube"
-        cube.addComponent(CubeRenderer)
-        cube.transform.position = Vector3(1, 0.5, 0)
-        entities.append(cube)
+        guard let bspFilePath = NSBundle.mainBundle().pathForResource("e1m1", ofType: "bsp") else {
+            print("BSP file not found.")
+            return
+        }
+        
+        guard let bsp = QuakeBSP(filePath: bspFilePath) else {
+            print("Failed to parse BSP file.")
+            return
+        }
+        
+        let quakeMap = Entity()
+        quakeMap.name = "QuakeMap"
+        let mapRendererComponent = quakeMap.addComponent(QuakeMapRenderer)
+        mapRendererComponent.bsp = bsp
+        entities.append(quakeMap)
+            
+        // Try to move camera to the first info_player_start in the map.
+        if let playerStart = bsp.entities.filter({ $0.className == "info_player_start" }).first {
+            if let pos = playerStart.origin {
+                camera.transform.position = Vector3(pos.x, pos.z + 32, -pos.y)
+            }
+            
+            if playerStart.properties.keys.contains("angle") {
+                if let angle = Float(playerStart.properties["angle"]!) {
+                    print(angle)
+                    camera.transform.rotation.y = (angle - 90) * Scalar.RadiansPerDegree
+                }
+            }
+            
+        }
+        
+        for entity in bsp.entities {
+            if entity.className == "worldspawn" {
+                continue
+            }
+                
+            let marker = Entity()
+            marker.name = entity.className
+            marker.addComponent(CubeRenderer)
+            marker.transform.scale = Vector3(16, 16, 16)
+
+            if let pos = entity.origin {
+                marker.transform.position = Vector3(pos.x, pos.z, -pos.y)
+            }
+                
+            entities.append(marker)
+        }
+        
     }
     
     // MARK: - Public API

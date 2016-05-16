@@ -30,8 +30,8 @@ class Camera : Component {
     
     required init() {
         fov = 90
-        near = 0.1
-        far = 256.0
+        near = 16.0
+        far = 4096.0
         aspect = 0.75
         
         super.init()
@@ -39,7 +39,8 @@ class Camera : Component {
     
     override func update(seconds: NSTimeInterval) {
         guard let entity = entity else { return }
-        let speed: Float = 2.0 * Float(seconds)
+        let lookSpeed: Float = 4.0 * Float(seconds)
+        let moveSpeed: Float = 128.0 * Float(seconds)
         
         let viewMatrix = self.viewMatrix.toArray()
         
@@ -48,35 +49,35 @@ class Camera : Component {
         let right = Vector3(viewMatrix[0], viewMatrix[4], viewMatrix[8])
 
         if Input.sharedInstance.isKeyDown(0) {
-            entity.transform.position = entity.transform.position - (right * speed)
+            entity.transform.position = entity.transform.position - (right * moveSpeed)
         }
         
         if Input.sharedInstance.isKeyDown(2) {
-            entity.transform.position = entity.transform.position + (right * speed)
+            entity.transform.position = entity.transform.position + (right * moveSpeed)
         }
 
         if Input.sharedInstance.isKeyDown(13) {
-            entity.transform.position = entity.transform.position - (forward * speed)
+            entity.transform.position = entity.transform.position - (forward * moveSpeed)
         }
         
         if Input.sharedInstance.isKeyDown(1) {
-            entity.transform.position = entity.transform.position + (forward * speed)
+            entity.transform.position = entity.transform.position + (forward * moveSpeed)
         }
 
         if Input.sharedInstance.isKeyDown(49) {
-            entity.transform.position = entity.transform.position + (up * speed)
+            entity.transform.position = entity.transform.position + (up * moveSpeed)
         }
 
         if Input.sharedInstance.isKeyDown(8) {
-            entity.transform.position = entity.transform.position - (up * speed)
+            entity.transform.position = entity.transform.position - (up * moveSpeed)
         }
 
         if Input.sharedInstance.isKeyDown(124) {
-            entity.transform.rotation.y -= speed
+            entity.transform.rotation.y -= lookSpeed
         }
 
         if Input.sharedInstance.isKeyDown(123) {
-            entity.transform.rotation.y += speed
+            entity.transform.rotation.y += lookSpeed
         }
 
     }

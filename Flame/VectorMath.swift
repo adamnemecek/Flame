@@ -469,6 +469,10 @@ extension Vector4: Equatable, Hashable {
         self.init(x: x, y: y, z: z, w: w)
     }
     
+    init(_ xyz: Vector3, _ w: Scalar) {
+        self.init(x: xyz.x, y: xyz.y, z: xyz.z, w: w)
+    }
+    
     init(_ v: [Scalar]) {
         
         assert(v.count == 4, "array must contain 4 elements, contained \(v.count)")
