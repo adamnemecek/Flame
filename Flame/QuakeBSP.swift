@@ -11,80 +11,92 @@ import Foundation
 class QuakeBSP {
 
     var version: Int!
-    var entities: [QuakeEntity]!
-    var planes: [QuakePlane]!
-    var vertices: [Vector3]!
-    var edges: [QuakeEdge]!
+    var entities: [BSPEntity]!
+    var vertices: [BSPVertex]!
+    var edges: [BSPEdge]!
     
     // MARK: - Public API
     
     init?(filePath: String) {
+        guard let data = NSFileManager.defaultManager().contentsAtPath(filePath) else {
+            print("❌ Couldn't read BSP file at \(filePath).")
+            return nil
+        }
         
-        guard let data = NSFileManager.defaultManager().contentsAtPath(filePath) else { return nil }
-        let header = readHeader(data)
+        let parser = BSPDataParser(data)
+        version = parser.readLong()
         
-        self.version = header.version
-        self.entities = parseEntities(data, lump: header.entities)
-        self.planes = parsePlanes(data, lump: header.planes)
-        self.vertices = parseVertices(data, lump: header.vertices)
-        self.edges = parseEdges(data, lump: header.edges)
-    }
-    
-    // MARK: - Private types
-    
-    private struct Header {
-        var version: Int!
-        var entities: Lump!
-        var planes: Lump!
-        var miptex: Lump!
-        var vertices: Lump!
-        var visilist: Lump!
-        var nodes: Lump!
-        var texinfo: Lump!
-        var faces: Lump!
-        var lightmaps: Lump!
-        var clipnodes: Lump!
-        var leaves: Lump!
-        var lframe: Lump!
-        var edges: Lump!
-        var ledges: Lump!
-        var models: Lump!
+        if version != 29 {
+            print("❌ Unsupported BSP format.")
+            return nil
+        }
+        
+        let headerEntries: [BSPHeaderEntry] = parse(data, offset: sizeof(Int32), size: 14 * BSPHeaderEntry.dataSize)
+        
+        if headerEntries.count != 14 {
+            print("❌ Invalid header entry count in BSP file.")
+            return nil
+        }
+
+        // Read entities definition.
+        parser.readOffset = headerEntries[HeaderIndex.Entities].offset
+        let entitiesDefinition = parser.readString(headerEntries[HeaderIndex.Entities].size)
+        entities = parseEntities(entitiesDefinition)
+        
+        vertices = parse(data, headerEntry: headerEntries[HeaderIndex.Vertices])
+        edges = parse(data, headerEntry: headerEntries[HeaderIndex.Edges])
     }
 
-    private struct Lump {
-        var offset: Int!
-        var size: Int!
+    // MARK: - Private types
+    
+    private struct HeaderIndex {
+        static let Entities = 0
+        static let Planes = 1
+        static let MipTex = 2
+        static let Vertices = 3
+        static let VisiList = 4
+        static let Nodes = 5
+        static let TexInfo = 6
+        static let Faces = 7
+        static let Lightmaps = 8
+        static let Clipnodes = 9
+        static let Leaves = 10
+        static let LFrame = 11
+        static let Edges = 12
+        static let Ledges = 13
+        static let Models = 14
     }
     
     // MARK: - Private API
-    
-    private func readHeader(data: NSData) -> Header {
-        var header = Header()
+
+    private func parse<T where T: BSPLump>(data: NSData, offset: Int, size: Int) -> [T] {
+        let lumpSize = T.dataSize
+        let numLumps = size / lumpSize
         
-        header.version = readInt(data, offset: 0)
-        header.entities = readLump(data, index: 0)
-        header.planes = readLump(data, index: 1)
-        header.miptex = readLump(data, index: 2)
-        header.vertices = readLump(data, index: 3)
-        header.visilist = readLump(data, index: 4)
-        header.nodes = readLump(data, index: 5)
-        header.texinfo = readLump(data, index: 6)
-        header.faces = readLump(data, index: 7)
-        header.lightmaps = readLump(data, index: 8)
-        header.clipnodes = readLump(data, index: 9)
-        header.leaves = readLump(data, index: 10)
-        header.lframe = readLump(data, index: 11)
-        header.edges = readLump(data, index: 12)
-        header.ledges = readLump(data, index: 13)
-        header.models = readLump(data, index: 14)
+        var result = [T]()
         
-        return header
+        for lumpIndex in 0 ..< numLumps {
+            let recordData = data.subdataWithRange(NSRange(location: offset + lumpIndex * lumpSize, length: lumpSize))
+            
+            if let record = T(data: recordData) {
+                result.append(record)
+            }
+            else {
+                Swift.print("❌ Failed to create \(T.self) #\(lumpIndex).")
+            }
+        }
+        
+        return result
     }
     
-    private func parseEntities(data: NSData, lump: Lump) -> [QuakeEntity] {
+    
+    private func parse<T where T: BSPLump>(data: NSData, headerEntry: BSPHeaderEntry) -> [T] {
+        return parse(data, offset: headerEntry.offset, size: headerEntry.size)
+    }
+
+    private func parseEntities(definition: String) -> [BSPEntity] {
         
-        var result = [QuakeEntity]()
-        let definition = readString(data, offset: lump.offset, size: lump.size)
+        var result = [BSPEntity]()
         
         do {
             let entitiesRegex = try NSRegularExpression(pattern: "\\{\\n((?:.*\\n)+?)\\}",
@@ -115,7 +127,7 @@ class QuakeBSP {
                         return (key, value)
                     })
 
-                var entity = QuakeEntity()
+                var entity = BSPEntity()
 
                 if let className = properties.filter({ $0.key == "classname" }).first?.value {
                     
@@ -146,105 +158,8 @@ class QuakeBSP {
         }
         catch {
             assertionFailure()
-            return [QuakeEntity]()
+            return [BSPEntity]()
         }
     }
 
-    private func parsePlanes(data: NSData, lump: Lump) -> [QuakePlane] {
-        var result = [QuakePlane]()
-
-        let numPlanes = lump.size / 20
-
-        for planeIndex in 0 ..< numPlanes {
-            let offset = lump.offset + planeIndex * 20
-            
-            let normal = Vector3(readFloat(data, offset: offset), readFloat(data, offset: offset + 4), readFloat(data, offset: offset + 8))
-            let distance = readFloat(data, offset: offset + 12)
-            let type = readInt(data, offset: offset + 16)
-            
-            result.append(QuakePlane(normal: normal, distance: distance, type: QuakePlaneType(rawValue: type)!))
-        }
-        
-        return result
-    }
-
-    private func parseVertices(data: NSData, lump: Lump) -> [Vector3] {
-        var result = [Vector3]()
-        
-        let numVertices = lump.size / 12
-        
-        for vertIndex in 0 ..< numVertices {
-            let offset = lump.offset + vertIndex * 12
-            let vertex = Vector3(readFloat(data, offset: offset), readFloat(data, offset: offset + 4), readFloat(data, offset: offset + 8))
-            result.append(vertex)
-        }
-        
-        return result
-    }
-
-    private func parseEdges(data: NSData, lump: Lump) -> [QuakeEdge] {
-        var result = [QuakeEdge]()
-        
-        let numEdges = lump.size / 4
-        
-        for edgeIndex in 0 ..< numEdges {
-            let offset = lump.offset + edgeIndex * 4
-            let startVertexIndex = readShort(data, offset: offset)
-            let endVertexIndex = readShort(data, offset: offset + 2)
-
-            let edge = QuakeEdge(startVertexIndex: startVertexIndex, endVertexIndex: endVertexIndex)
-            
-            result.append(edge)
-        }
-        
-        return result
-    }
-    
-    private func readInt(data: NSData, offset: Int) -> Int {
-        let range = NSRange(location: offset, length: sizeof(UInt32))
-        var buffer = [UInt32](count: 1, repeatedValue: 0)
-        
-        data.getBytes(&buffer, range: range)
-        return Int(buffer[0].littleEndian)
-    }
-    
-    private func readShort(data: NSData, offset: Int) -> Int {
-        let range = NSRange(location: offset, length: sizeof(UInt32))
-        var buffer = [UInt16](count: 1, repeatedValue: 0)
-        
-        data.getBytes(&buffer, range: range)
-        return Int(buffer[0].littleEndian)
-    }
-    
-    private func readFloat(data: NSData, offset: Int) -> Float {
-        let range = NSRange(location: offset, length: sizeof(Float32))
-        var buffer = [Float32](count: 1, repeatedValue: 0)
-        
-        data.getBytes(&buffer, range: range)
-        return Float(buffer[0])
-    }
-    
-    private func readString(data: NSData, offset: Int, size: Int) -> String {
-        var buffer = [Int8](count: size, repeatedValue: 0)
-        data.getBytes(&buffer, range: NSRange(location: offset, length: size))
-        
-        var result = ""
-        for c in buffer {
-            if c == 0 { break }
-            result.append(Character(UnicodeScalar(Int(c))))
-        }
-        
-        return result
-    }
-
-    private func readLump(data: NSData, index: Int) -> Lump {
-        let offset = sizeof(UInt32) * (1 + index * 2)
-        let range = NSRange(location: offset, length: sizeof(UInt32) * 2)
-        var buffer = [UInt32](count: 2, repeatedValue: 0)
-        
-        data.getBytes(&buffer, range: range)
-        
-        return Lump(offset: Int(buffer[0].littleEndian), size: Int(buffer[1].littleEndian))
-    }
-    
 }

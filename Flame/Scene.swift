@@ -44,22 +44,32 @@ class Scene {
         gridComponent.color = Vector4(0, 0.25, 0, 1)
         entities.append(grid)
 
-        guard let bspFilePath = NSBundle.mainBundle().pathForResource("e1m1", ofType: "bsp") else {
+        guard let bspFilePath = NSBundle.mainBundle().pathForResource("honey", ofType: "bsp") else {
             print("BSP file not found.")
             return
         }
+
+        let bspImportStartTime = mach_absolute_time()
         
         guard let bsp = QuakeBSP(filePath: bspFilePath) else {
             print("Failed to parse BSP file.")
             return
         }
         
+        let bspImportEndTime = mach_absolute_time()
+        let bspImportTime = NSTimeInterval(Double(bspImportEndTime - bspImportStartTime) / Double(NSEC_PER_SEC))
+        print("Imported BSP in \(bspImportTime * 1000) ms.")
+        
+        print("\(bsp.edges.count) edges")
+        print("\(bsp.vertices.count) vertices")
+        print("\(bsp.entities.count) entities")
+        
         let quakeMap = Entity()
         quakeMap.name = "QuakeMap"
         let mapRendererComponent = quakeMap.addComponent(QuakeMapRenderer)
         mapRendererComponent.bsp = bsp
         entities.append(quakeMap)
-            
+        
         // Try to move camera to the first info_player_start in the map.
         if let playerStart = bsp.entities.filter({ $0.className == "info_player_start" }).first {
             if let pos = playerStart.origin {
@@ -68,15 +78,15 @@ class Scene {
             
             if playerStart.properties.keys.contains("angle") {
                 if let angle = Float(playerStart.properties["angle"]!) {
-                    print(angle)
                     camera.transform.rotation.y = (angle - 90) * Scalar.RadiansPerDegree
                 }
             }
             
         }
         
+        /*
         for entity in bsp.entities {
-            if entity.className == "worldspawn" {
+            if entity.className != "light" {
                 continue
             }
                 
@@ -91,7 +101,7 @@ class Scene {
                 
             entities.append(marker)
         }
-        
+        */
     }
     
     // MARK: - Public API

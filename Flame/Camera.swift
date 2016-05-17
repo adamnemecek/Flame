@@ -40,7 +40,7 @@ class Camera : Component {
     override func update(seconds: NSTimeInterval) {
         guard let entity = entity else { return }
         let lookSpeed: Float = 4.0 * Float(seconds)
-        let moveSpeed: Float = 128.0 * Float(seconds)
+        let moveSpeed: Float = 512.0 * Float(seconds)
         
         let viewMatrix = self.viewMatrix.toArray()
         

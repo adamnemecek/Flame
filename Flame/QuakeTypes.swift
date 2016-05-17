@@ -8,16 +8,68 @@
 
 import Foundation
 
-enum QuakePlaneType: Int {
-    case xAxisAligned = 0
-    case yAxisAligned = 1
-    case zAxisAligned = 2
-    case xAxisApproximate = 3
-    case yAxisApproximate = 4
-    case zAxisApproximate = 5
+protocol BSPLump {
+    
+    static var dataSize: Int { get set }
+    
+    init?(data: NSData)
+    
 }
 
-struct QuakeEntity {
+struct BSPHeaderEntry : BSPLump {
+    
+    var offset: Int
+    var size: Int
+    
+    static var dataSize = 8
+    
+    init?(data: NSData) {
+        guard data.length == BSPHeaderEntry.dataSize else { return nil }
+        let parser = BSPDataParser(data)
+        
+        offset = parser.readLong()
+        size = parser.readLong()
+    }
+    
+}
+
+struct BSPEdge : BSPLump {
+    
+    var startVertexIndex: Int
+    var endVertexIndex: Int
+    
+    static var dataSize = 4
+    
+    init?(data: NSData) {
+        guard data.length == BSPEdge.dataSize else { return nil }
+        let parser = BSPDataParser(data)
+        
+        startVertexIndex = parser.readShort()
+        endVertexIndex = parser.readShort()
+    }
+    
+}
+
+struct BSPVertex : BSPLump {
+    
+    var x: Float
+    var y: Float
+    var z: Float
+    
+    static var dataSize = 12
+    
+    init?(data: NSData) {
+        guard data.length == BSPVertex.dataSize else { return nil }
+        let parser = BSPDataParser(data)
+        
+        x = parser.readFloat()
+        y = parser.readFloat()
+        z = parser.readFloat()
+    }
+    
+}
+
+struct BSPEntity {
     var className: String
     var origin: Vector3?
     
@@ -27,15 +79,4 @@ struct QuakeEntity {
         className = ""
         properties = [String: String]()
     }
-}
-
-struct QuakePlane {
-    var normal: Vector3
-    var distance: Float
-    var type: QuakePlaneType
-}
-
-struct QuakeEdge {
-    var startVertexIndex: Int
-    var endVertexIndex: Int
 }

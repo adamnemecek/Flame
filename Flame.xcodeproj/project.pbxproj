@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		B9104BD21CBBFD0800F078BF /* Camera.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9104BD11CBBFD0800F078BF /* Camera.swift */; };
+		B916CA531CEADBBA00A344B4 /* BSPDataParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B916CA521CEADBBA00A344B4 /* BSPDataParser.swift */; };
+		B916CA571CEAE24300A344B4 /* honey.bsp in Resources */ = {isa = PBXBuildFile; fileRef = B916CA561CEAE24300A344B4 /* honey.bsp */; };
 		B91EA1671CAA5D6100BFEC30 /* TriangleRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B91EA1661CAA5D6100BFEC30 /* TriangleRenderer.swift */; };
 		B92E8A011CA85E4500F8768A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B92E8A001CA85E4500F8768A /* AppDelegate.swift */; };
 		B92E8A031CA85E4500F8768A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B92E8A021CA85E4500F8768A /* ViewController.swift */; };
@@ -51,6 +53,8 @@
 
 /* Begin PBXFileReference section */
 		B9104BD11CBBFD0800F078BF /* Camera.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Camera.swift; sourceTree = "<group>"; };
+		B916CA521CEADBBA00A344B4 /* BSPDataParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BSPDataParser.swift; sourceTree = "<group>"; };
+		B916CA561CEAE24300A344B4 /* honey.bsp */ = {isa = PBXFileReference; lastKnownFileType = file; path = honey.bsp; sourceTree = "<group>"; };
 		B91EA1661CAA5D6100BFEC30 /* TriangleRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TriangleRenderer.swift; sourceTree = "<group>"; };
 		B92B8C9F1CCFC71B00A85DEB /* BSP.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = BSP.playground; sourceTree = "<group>"; };
 		B92E89FD1CA85E4500F8768A /* Flame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Flame.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -161,10 +165,11 @@
 		B92E8A241CA956D000F8768A /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				B99049DC1CE90CEF00372FC3 /* e1m1.bsp */,
-				B99049DA1CE905AC00372FC3 /* blockout.bsp */,
-				B92E8A041CA85E4500F8768A /* Assets.xcassets */,
+				B916CA561CEAE24300A344B4 /* honey.bsp */,
 				B9354FBF1CD6630E00C8FB28 /* testmap.bsp */,
+				B99049DA1CE905AC00372FC3 /* blockout.bsp */,
+				B99049DC1CE90CEF00372FC3 /* e1m1.bsp */,
+				B92E8A041CA85E4500F8768A /* Assets.xcassets */,
 				B92E8A091CA85E4500F8768A /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -195,6 +200,7 @@
 				B9354FBB1CD6609400C8FB28 /* QuakeBSP.swift */,
 				B9354FBD1CD6625200C8FB28 /* QuakeTypes.swift */,
 				B99049D81CE8FAFD00372FC3 /* QuakeMapRenderer.swift */,
+				B916CA521CEADBBA00A344B4 /* BSPDataParser.swift */,
 			);
 			name = Quake;
 			sourceTree = "<group>";
@@ -334,6 +340,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B92E8A051CA85E4500F8768A /* Assets.xcassets in Resources */,
+				B916CA571CEAE24300A344B4 /* honey.bsp in Resources */,
 				B92E8A081CA85E4500F8768A /* Main.storyboard in Resources */,
 				B99049DD1CE90CEF00372FC3 /* e1m1.bsp in Resources */,
 				B99049DB1CE905AC00372FC3 /* blockout.bsp in Resources */,
@@ -358,6 +365,7 @@
 				B9A9ECA01CCF092600A7645B /* GridRenderer.swift in Sources */,
 				B9354FBC1CD6609400C8FB28 /* QuakeBSP.swift in Sources */,
 				B9104BD21CBBFD0800F078BF /* Camera.swift in Sources */,
+				B916CA531CEADBBA00A344B4 /* BSPDataParser.swift in Sources */,
 				B9D7965D1CB08732002FFDF6 /* Notifications.swift in Sources */,
 				B92E8A1E1CA863FC00F8768A /* MetalView.swift in Sources */,
 				B9E16AAA1CAA4B5A0027032F /* MeshRenderer.swift in Sources */,
