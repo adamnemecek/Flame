@@ -14,6 +14,8 @@ class QuakeBSP {
     var entities: [BSPEntity]!
     var vertices: [BSPVertex]!
     var edges: [BSPEdge]!
+    var planes: [BSPPlane]!
+    var faces: [BSPFace]!
     
     // MARK: - Public API
     
@@ -45,6 +47,8 @@ class QuakeBSP {
         
         vertices = parse(data, headerEntry: headerEntries[HeaderIndex.Vertices])
         edges = parse(data, headerEntry: headerEntries[HeaderIndex.Edges])
+        planes = parse(data, headerEntry: headerEntries[HeaderIndex.Planes])
+        faces = parse(data, headerEntry: headerEntries[HeaderIndex.Faces])
     }
 
     // MARK: - Private types

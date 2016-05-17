@@ -21,7 +21,17 @@ class BSPDataParser {
         self.data = data
         readOffset = 0
     }
-    
+
+    func readByte() -> Int {
+        let range = NSRange(location: readOffset, length: sizeof(Int8))
+        var buffer = [Int8](count: 1, repeatedValue: 0)
+        
+        data.getBytes(&buffer, range: range)
+        readOffset += sizeof(Int8)
+        
+        return Int(buffer[0])
+    }
+
     func readShort() -> Int {
         let range = NSRange(location: readOffset, length: sizeof(UInt16))
         var buffer = [UInt16](count: 1, repeatedValue: 0)

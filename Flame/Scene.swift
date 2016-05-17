@@ -63,6 +63,8 @@ class Scene {
         print("\(bsp.edges.count) edges")
         print("\(bsp.vertices.count) vertices")
         print("\(bsp.entities.count) entities")
+        print("\(bsp.planes.count) planes")
+        print("\(bsp.faces.count) faces")
         
         let quakeMap = Entity()
         quakeMap.name = "QuakeMap"

@@ -69,6 +69,59 @@ struct BSPVertex : BSPLump {
     
 }
 
+struct BSPPlane : BSPLump {
+    
+    var normal: Vector3
+    var distance: Float
+    var type: Int
+    
+    static var dataSize = 20
+    
+    init?(data: NSData) {
+        guard data.length == BSPPlane.dataSize else { return nil }
+        let parser = BSPDataParser(data)
+        
+        normal = Vector3(parser.readFloat(), parser.readFloat(), parser.readFloat())
+        distance = parser.readFloat()
+        type = parser.readLong()
+    }
+    
+}
+
+struct BSPFace : BSPLump {
+    
+    var planeIndex: Int
+    var frontFacing: Bool
+    var firstEdgeIndex: Int
+    var edgeCount: Int
+    var textureIndex: Int
+    var lightType: Int
+    var baseLightLevel: Int
+    var extraLightA: Int
+    var extraLightB: Int
+    var lightmapIndex: Int
+    
+    static var dataSize = 20
+    
+    init?(data: NSData) {
+        guard data.length == BSPFace.dataSize else { return nil }
+        let parser = BSPDataParser(data)
+        
+        planeIndex = parser.readShort()
+        frontFacing = parser.readShort() == 1 ? true : false
+        firstEdgeIndex = parser.readLong()
+        edgeCount = parser.readShort()
+        textureIndex = parser.readShort()
+        lightType = parser.readByte()
+        baseLightLevel = parser.readByte()
+        extraLightA = parser.readByte()
+        extraLightB = parser.readByte()
+        lightmapIndex = parser.readLong()
+        
+    }
+    
+}
+
 struct BSPEntity {
     var className: String
     var origin: Vector3?
