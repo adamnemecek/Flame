@@ -44,7 +44,7 @@ class Scene {
         gridComponent.color = Vector4(0, 0.25, 0, 1)
         entities.append(grid)
 
-        guard let bspFilePath = NSBundle.mainBundle().pathForResource("honey", ofType: "bsp") else {
+        guard let bspFilePath = NSBundle.mainBundle().pathForResource("e1m1", ofType: "bsp") else {
             print("BSP file not found.")
             return
         }

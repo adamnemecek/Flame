@@ -66,6 +66,10 @@ struct BSPVertex : BSPLump {
         y = parser.readFloat()
         z = parser.readFloat()
     }
+
+    func toVector3() -> Vector3 {
+        return Vector3(x, z, -y)
+    }
     
 }
 
@@ -118,6 +122,24 @@ struct BSPFace : BSPLump {
         extraLightB = parser.readByte()
         lightmapIndex = parser.readLong()
         
+    }
+    
+}
+
+struct BSPEdgePointer: BSPLump {
+    
+    var edgeIndex: Int
+    
+    static var dataSize = 4
+    
+    init?(data: NSData) {
+        guard data.length == BSPEdgePointer.dataSize else { return nil }
+        let parser = BSPDataParser(data)
+        
+        edgeIndex = parser.readLong()
+        if edgeIndex > Int(UInt32.max) / 2 {
+            edgeIndex = edgeIndex - (Int(UInt32.max) + 1)
+        }
     }
     
 }

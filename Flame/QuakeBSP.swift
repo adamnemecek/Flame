@@ -16,6 +16,7 @@ class QuakeBSP {
     var edges: [BSPEdge]!
     var planes: [BSPPlane]!
     var faces: [BSPFace]!
+    var edgeList: [BSPEdgePointer]!
     
     // MARK: - Public API
     
@@ -49,6 +50,11 @@ class QuakeBSP {
         edges = parse(data, headerEntry: headerEntries[HeaderIndex.Edges])
         planes = parse(data, headerEntry: headerEntries[HeaderIndex.Planes])
         faces = parse(data, headerEntry: headerEntries[HeaderIndex.Faces])
+        edgeList = parse(data, headerEntry: headerEntries[HeaderIndex.EdgeList])
+        
+        for edgePtr in edgeList {
+            print(edgePtr.edgeIndex)
+        }
     }
 
     // MARK: - Private types
@@ -67,7 +73,7 @@ class QuakeBSP {
         static let Leaves = 10
         static let LFrame = 11
         static let Edges = 12
-        static let Ledges = 13
+        static let EdgeList = 13
         static let Models = 14
     }
     
