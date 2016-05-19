@@ -11,6 +11,7 @@
 		B916CA531CEADBBA00A344B4 /* BSPDataParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = B916CA521CEADBBA00A344B4 /* BSPDataParser.swift */; };
 		B916CA571CEAE24300A344B4 /* honey.bsp in Resources */ = {isa = PBXBuildFile; fileRef = B916CA561CEAE24300A344B4 /* honey.bsp */; };
 		B91EA1671CAA5D6100BFEC30 /* TriangleRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B91EA1661CAA5D6100BFEC30 /* TriangleRenderer.swift */; };
+		B924B9C31CEE13D50099362B /* palette.lmp in Resources */ = {isa = PBXBuildFile; fileRef = B924B9C21CEE13D50099362B /* palette.lmp */; };
 		B92E8A011CA85E4500F8768A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B92E8A001CA85E4500F8768A /* AppDelegate.swift */; };
 		B92E8A031CA85E4500F8768A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B92E8A021CA85E4500F8768A /* ViewController.swift */; };
 		B92E8A051CA85E4500F8768A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B92E8A041CA85E4500F8768A /* Assets.xcassets */; };
@@ -56,6 +57,7 @@
 		B916CA521CEADBBA00A344B4 /* BSPDataParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BSPDataParser.swift; sourceTree = "<group>"; };
 		B916CA561CEAE24300A344B4 /* honey.bsp */ = {isa = PBXFileReference; lastKnownFileType = file; path = honey.bsp; sourceTree = "<group>"; };
 		B91EA1661CAA5D6100BFEC30 /* TriangleRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TriangleRenderer.swift; sourceTree = "<group>"; };
+		B924B9C21CEE13D50099362B /* palette.lmp */ = {isa = PBXFileReference; lastKnownFileType = file; path = palette.lmp; sourceTree = "<group>"; };
 		B92B8C9F1CCFC71B00A85DEB /* BSP.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = BSP.playground; sourceTree = "<group>"; };
 		B92E89FD1CA85E4500F8768A /* Flame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Flame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B92E8A001CA85E4500F8768A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -165,6 +167,7 @@
 		B92E8A241CA956D000F8768A /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				B924B9C21CEE13D50099362B /* palette.lmp */,
 				B916CA561CEAE24300A344B4 /* honey.bsp */,
 				B9354FBF1CD6630E00C8FB28 /* testmap.bsp */,
 				B99049DA1CE905AC00372FC3 /* blockout.bsp */,
@@ -342,6 +345,7 @@
 				B92E8A051CA85E4500F8768A /* Assets.xcassets in Resources */,
 				B916CA571CEAE24300A344B4 /* honey.bsp in Resources */,
 				B92E8A081CA85E4500F8768A /* Main.storyboard in Resources */,
+				B924B9C31CEE13D50099362B /* palette.lmp in Resources */,
 				B99049DD1CE90CEF00372FC3 /* e1m1.bsp in Resources */,
 				B99049DB1CE905AC00372FC3 /* blockout.bsp in Resources */,
 				B9354FC01CD6630E00C8FB28 /* testmap.bsp in Resources */,
