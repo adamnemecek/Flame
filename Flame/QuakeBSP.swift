@@ -18,6 +18,7 @@ class QuakeBSP {
     var faces: [BSPFace]!
     var edgeList: [BSPEdgePointer]!
     
+    
     // MARK: - Public API
     
     init?(filePath: String) {
@@ -41,16 +42,16 @@ class QuakeBSP {
             return nil
         }
 
-        // Read entities definition.
-        parser.readOffset = headerEntries[HeaderIndex.Entities].offset
-        let entitiesDefinition = parser.readString(headerEntries[HeaderIndex.Entities].size)
-        entities = parseEntities(entitiesDefinition)
-        
         vertices = parse(data, headerEntry: headerEntries[HeaderIndex.Vertices])
         edges = parse(data, headerEntry: headerEntries[HeaderIndex.Edges])
         planes = parse(data, headerEntry: headerEntries[HeaderIndex.Planes])
         faces = parse(data, headerEntry: headerEntries[HeaderIndex.Faces])
         edgeList = parse(data, headerEntry: headerEntries[HeaderIndex.EdgeList])
+
+        // Parse entity definitions.
+        parser.readOffset = headerEntries[HeaderIndex.Entities].offset
+        let entitiesDefinition = parser.readString(headerEntries[HeaderIndex.Entities].size)
+        entities = parseEntities(entitiesDefinition)
     }
 
     // MARK: - Private types

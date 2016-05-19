@@ -82,7 +82,7 @@ class QuakeMapRenderer : MeshRenderer {
                     vertColor = Vector4(0.8, 0.8, 0.8, 1)
                 }
 
-                vertices.append(Vertex(position: Vector4(v.toVector3(), 1), color: vertColor))
+                vertices.append(Vertex(position: Vector4(v.position.toVector3(), 1), color: vertColor))
                 
                 colorStepper += 1
                 if colorStepper > 2 {
@@ -100,8 +100,11 @@ class QuakeMapRenderer : MeshRenderer {
         var wireVertices = [Vertex]()
         
         for edge in bsp.edges {
-            wireVertices.append(Vertex(position: Vector4(bsp.vertices[edge.startVertexIndex].toVector3(), 1), color: Vector4(0.1, 0.1, 0.1, 1)))
-            wireVertices.append(Vertex(position: Vector4(bsp.vertices[edge.endVertexIndex].toVector3(), 1), color: Vector4(0.1, 0.1, 0.1, 1)))
+            wireVertices.append(Vertex(position: Vector4(bsp.vertices[edge.startVertexIndex].position.toVector3(), 1),
+                color: Vector4(0.1, 0.1, 0.1, 1)))
+            
+            wireVertices.append(Vertex(position: Vector4(bsp.vertices[edge.endVertexIndex].position.toVector3(), 1),
+                color: Vector4(0.1, 0.1, 0.1, 1)))
         }
         
         wireVertexCount = wireVertices.count

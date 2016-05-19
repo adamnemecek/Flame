@@ -16,6 +16,24 @@ protocol BSPLump {
     
 }
 
+struct BSPVector3 {
+    
+    var x: Float
+    var y: Float
+    var z: Float
+    
+    init(_ x: Float, _ y: Float, _ z: Float) {
+        self.x = x
+        self.y = y
+        self.z = z
+    }
+    
+    func toVector3() -> Vector3 {
+        return Vector3(x, z, -y)
+    }
+    
+}
+
 struct BSPHeaderEntry : BSPLump {
     
     var offset: Int
@@ -52,23 +70,15 @@ struct BSPEdge : BSPLump {
 
 struct BSPVertex : BSPLump {
     
-    var x: Float
-    var y: Float
-    var z: Float
+    var position: BSPVector3
     
     static var dataSize = 12
     
     init?(data: NSData) {
         guard data.length == BSPVertex.dataSize else { return nil }
         let parser = BSPDataParser(data)
-        
-        x = parser.readFloat()
-        y = parser.readFloat()
-        z = parser.readFloat()
-    }
 
-    func toVector3() -> Vector3 {
-        return Vector3(x, z, -y)
+        position = BSPVector3(parser.readFloat(), parser.readFloat(), parser.readFloat())
     }
     
 }
@@ -140,6 +150,60 @@ struct BSPEdgePointer: BSPLump {
         if edgeIndex > Int(UInt32.max) / 2 {
             edgeIndex = edgeIndex - (Int(UInt32.max) + 1)
         }
+    }
+    
+}
+
+struct BSPTextureInfo : BSPLump {
+
+    var vectorS: BSPVector3
+    var offsetS: Float
+    var vectorT: BSPVector3
+    var offsetT: Float
+    var textureIndex: Int
+    var animated: Bool
+    
+    static var dataSize = 40;
+    
+    init?(data: NSData) {
+        guard data.length == BSPTextureInfo.dataSize else { return nil }
+        let parser = BSPDataParser(data)
+        
+        vectorS = BSPVector3(parser.readFloat(), parser.readFloat(), parser.readFloat())
+        offsetS = parser.readFloat()
+        vectorT = BSPVector3(parser.readFloat(), parser.readFloat(), parser.readFloat())
+        offsetT = parser.readFloat()
+        textureIndex = parser.readLong()
+        animated = parser.readLong() == 1
+    }
+    
+    
+}
+
+struct BSPMipTex: BSPLump {
+    
+    var name: String
+    var width: Int
+    var height: Int
+    var offsetMipLevel0: Int
+    var offsetMipLevel1: Int
+    var offsetMipLevel2: Int
+    var offsetMipLevel3: Int
+    
+    static var dataSize = 40;
+    
+    init?(data: NSData) {
+        guard data.length == BSPMipTex.dataSize else { return nil }
+        let parser = BSPDataParser(data)
+        
+        name = parser.readString(16)
+        print(name)
+        width = parser.readLong()
+        height = parser.readLong()
+        offsetMipLevel0 = parser.readLong()
+        offsetMipLevel1 = parser.readLong()
+        offsetMipLevel2 = parser.readLong()
+        offsetMipLevel3 = parser.readLong()
     }
     
 }
