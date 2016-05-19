@@ -51,10 +51,6 @@ class QuakeBSP {
         planes = parse(data, headerEntry: headerEntries[HeaderIndex.Planes])
         faces = parse(data, headerEntry: headerEntries[HeaderIndex.Faces])
         edgeList = parse(data, headerEntry: headerEntries[HeaderIndex.EdgeList])
-        
-        for edgePtr in edgeList {
-            print(edgePtr.edgeIndex)
-        }
     }
 
     // MARK: - Private types

@@ -85,25 +85,7 @@ class Scene {
             }
             
         }
-        
-        /*
-        for entity in bsp.entities {
-            if entity.className != "light" {
-                continue
-            }
-                
-            let marker = Entity()
-            marker.name = entity.className
-            marker.addComponent(CubeRenderer)
-            marker.transform.scale = Vector3(16, 16, 16)
 
-            if let pos = entity.origin {
-                marker.transform.position = Vector3(pos.x, pos.z, -pos.y)
-            }
-                
-            entities.append(marker)
-        }
-        */
     }
     
     // MARK: - Public API

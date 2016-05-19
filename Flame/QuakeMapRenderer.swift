@@ -9,6 +9,8 @@
 import MetalKit
 
 class QuakeMapRenderer : MeshRenderer {
+
+    var drawWireframe = true
     
     var wireVertexBuffer: MTLBuffer?
     var wireVertexCount: Int = 0
@@ -58,32 +60,34 @@ class QuakeMapRenderer : MeshRenderer {
             }
             
             // Assemble triangles and add to vertex buffer.
-            
-            /*
-            // whip up tris
-            int[] tris = new int[(face.num_ledges - 2) * 3];
-            int tristep = 1;
-            for (int i = 1; i < verts.Length - 1; i++)
-            {
-                tris[tristep - 1] = 0;
-                tris[tristep] = i;
-                tris[tristep + 1] = i + 1;
-                tristep += 3;
+            var indices = [Int](count: (face.edgeCount - 2) * 3, repeatedValue: 0)
+            var triangleStep = 1
+            for i in 1 ..< faceVertices.count - 1 {
+                indices[triangleStep - 1] = 0
+                indices[triangleStep] = i
+                indices[triangleStep + 1] = i + 1
+                triangleStep += 3
             }
-            */
+            
+            var colorStepper = 0
+            for index in indices {
+                
+                let v = faceVertices[index]
+                
+                var vertColor = Vector4(0.9, 0.9, 0.9, 1)
+                if colorStepper == 1 {
+                    vertColor = Vector4(0.85, 0.85, 0.85, 1)
+                }
+                if colorStepper == 2 {
+                    vertColor = Vector4(0.8, 0.8, 0.8, 1)
+                }
 
-            for i in 0 ..< 3 {
-                let v = faceVertices[i]
-                
-                var vertColor = Vector4(1, 0, 0, 1)
-                if i == 1 {
-                    vertColor = Vector4(0, 1, 0, 1)
-                }
-                if i == 2 {
-                    vertColor = Vector4(0, 0, 1, 1)
-                }
-                
                 vertices.append(Vertex(position: Vector4(v.toVector3(), 1), color: vertColor))
+                
+                colorStepper += 1
+                if colorStepper > 2 {
+                    colorStepper = 0
+                }
             }
             
         }
@@ -96,8 +100,8 @@ class QuakeMapRenderer : MeshRenderer {
         var wireVertices = [Vertex]()
         
         for edge in bsp.edges {
-           wireVertices.append(Vertex(position: Vector4(bsp.vertices[edge.startVertexIndex].toVector3(), 1), color: Vector4(1, 1, 1, 1)))
-            wireVertices.append(Vertex(position: Vector4(bsp.vertices[edge.endVertexIndex].toVector3(), 1), color: Vector4(1, 1, 1, 1)))
+            wireVertices.append(Vertex(position: Vector4(bsp.vertices[edge.startVertexIndex].toVector3(), 1), color: Vector4(0.1, 0.1, 0.1, 1)))
+            wireVertices.append(Vertex(position: Vector4(bsp.vertices[edge.endVertexIndex].toVector3(), 1), color: Vector4(0.1, 0.1, 0.1, 1)))
         }
         
         wireVertexCount = wireVertices.count
@@ -108,8 +112,10 @@ class QuakeMapRenderer : MeshRenderer {
     }
     
     override func draw(commandEncoder: MTLRenderCommandEncoder) {
-        commandEncoder.setVertexBuffer(wireVertexBuffer, offset: 0, atIndex: 0)
-        commandEncoder.drawPrimitives(.Line, vertexStart: 0, vertexCount: wireVertexCount, instanceCount: 1)
+        if drawWireframe {
+            commandEncoder.setVertexBuffer(wireVertexBuffer, offset: 0, atIndex: 0)
+            commandEncoder.drawPrimitives(.Line, vertexStart: 0, vertexCount: wireVertexCount, instanceCount: 1)
+        }
 
         commandEncoder.setVertexBuffer(vertexBuffer, offset: 0, atIndex: 0)
         commandEncoder.drawPrimitives(.Triangle, vertexStart: 0, vertexCount: vertexCount, instanceCount: 1)
