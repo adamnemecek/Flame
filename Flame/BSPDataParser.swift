@@ -23,11 +23,11 @@ class BSPDataParser {
     }
 
     func readByte() -> Int {
-        let range = NSRange(location: readOffset, length: sizeof(Int8))
-        var buffer = [Int8](count: 1, repeatedValue: 0)
+        let range = NSRange(location: readOffset, length: sizeof(UInt8))
+        var buffer = [UInt8](count: 1, repeatedValue: 0)
         
         data.getBytes(&buffer, range: range)
-        readOffset += sizeof(Int8)
+        readOffset += sizeof(UInt8)
         
         return Int(buffer[0])
     }

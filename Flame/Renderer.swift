@@ -22,6 +22,9 @@ class Renderer {
 
     private var depthStencilState: MTLDepthStencilState?
     private var depthTexture: MTLTexture!
+
+    private var textureSampler: MTLSamplerState?
+    private var fallbackTexture: MTLTexture?
     
     // MARK: - Init & deinit
     
@@ -60,15 +63,28 @@ class Renderer {
         if let depthStencilState = depthStencilState {
             commandEncoder.setDepthStencilState(depthStencilState)
         }
-
+        
+        if let textureSampler = textureSampler {
+            commandEncoder.setFragmentSamplerState(textureSampler, atIndex: 0)
+        }
+        
+        commandEncoder.setFrontFacingWinding(.Clockwise)
+        commandEncoder.setCullMode(.Back)
+        
         camera.aspect = Float(drawable.texture.width) / Float(drawable.texture.height)
         
         let viewMatrix = camera.viewMatrix
         let projectionMatrix = camera.projectionMatrix
         
         for meshRenderer in Scene.sharedInstance.getMeshRenderers() {
+            
+            if meshRenderer.hidden {
+                continue
+            }
+            
             if let entity = meshRenderer.entity {
                 let modelMatrix = entity.transform.matrix
+         
                 let mvpMatrix = projectionMatrix * viewMatrix * modelMatrix
 
                 let uniformBuffer = device.newBufferWithLength(sizeof(Float) * 16, options: .CPUCacheModeDefaultCache)
@@ -77,8 +93,13 @@ class Renderer {
                 
                 commandEncoder.setVertexBuffer(uniformBuffer, offset: 0, atIndex: 1)
                 
+                if let fallbackTexture = fallbackTexture {
+                    commandEncoder.setFragmentTexture(fallbackTexture, atIndex: 0)
+                }
+
                 meshRenderer.draw(commandEncoder)
             }
+            
         }
         
         commandEncoder.endEncoding()
@@ -91,12 +112,17 @@ class Renderer {
         vertexDescriptor.attributes[0].format = .Float4
         vertexDescriptor.attributes[0].bufferIndex = 0
         vertexDescriptor.attributes[0].offset = 0
-        
+
         vertexDescriptor.attributes[1].format = .Float4
         vertexDescriptor.attributes[1].bufferIndex = 0
         vertexDescriptor.attributes[1].offset = sizeof(Float) * 4
+
+        vertexDescriptor.attributes[2].format = .Float2
+        vertexDescriptor.attributes[2].bufferIndex = 0
+        vertexDescriptor.attributes[2].offset = sizeof(Float) * 8
         
-        vertexDescriptor.layouts[0].stride = sizeof(Float) * 8
+        vertexDescriptor.layouts[0].stride = sizeof(Vertex)
+        vertexDescriptor.layouts[0].stepRate = 1
         vertexDescriptor.layouts[0].stepFunction = .PerVertex
         
         let pipelineDescriptor = MTLRenderPipelineDescriptor()
@@ -119,6 +145,25 @@ class Renderer {
         depthTextureDescriptor.width = Int(framebufferSize.width)
         depthTextureDescriptor.height = Int(framebufferSize.height)
         depthTexture = device.newTextureWithDescriptor(depthTextureDescriptor)
+
+        let textureSamplerDescriptor = MTLSamplerDescriptor()
+        textureSamplerDescriptor.minFilter = .Nearest
+        textureSamplerDescriptor.magFilter = .Nearest
+        textureSamplerDescriptor.sAddressMode = .Repeat
+        textureSamplerDescriptor.tAddressMode = .Repeat
+        textureSampler = device.newSamplerStateWithDescriptor(textureSamplerDescriptor)
+
+        let fallbackTextureSize = 8
+
+        let fallbackTextureDescriptor = MTLTextureDescriptor.texture2DDescriptorWithPixelFormat(.RGBA8Unorm, width: fallbackTextureSize, height: fallbackTextureSize, mipmapped: true)
+        fallbackTexture = device.newTextureWithDescriptor(fallbackTextureDescriptor)
+
+        let rawData = [UInt8](count: fallbackTextureSize * fallbackTextureSize * 4, repeatedValue: 0xFF)
+        let rawTexture = NSData(bytes: rawData as [UInt8], length: rawData.count)
+        fallbackTexture?.replaceRegion(MTLRegionMake2D(0, 0, fallbackTextureSize, fallbackTextureSize),
+                                       mipmapLevel: 0,
+                                       withBytes: UnsafePointer<UInt8>(rawTexture.bytes),
+                                       bytesPerRow: 4 * fallbackTextureSize)
     }
     
 }

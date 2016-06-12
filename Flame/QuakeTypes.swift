@@ -8,6 +8,27 @@
 
 import Foundation
 
+struct QuakePalette {
+    
+    var colors: [Vector4]
+    
+    init?(data: NSData) {
+        guard data.length == 768 else { return nil }
+        let parser = BSPDataParser(data)
+        
+        colors = [Vector4](count: 256, repeatedValue: Vector4.Zero)
+        
+        for i in 0 ..< 256 {
+            parser.readOffset = i * 3
+            colors[i] = Vector4(Float(parser.readByte()) / 255.0,
+                                Float(parser.readByte()) / 255.0,
+                                Float(parser.readByte()) / 255.0,
+                                1)
+        }
+    }
+    
+}
+
 protocol BSPLump {
     
     static var dataSize: Int { get set }
@@ -176,9 +197,10 @@ struct BSPTextureInfo : BSPLump {
         textureIndex = parser.readLong()
         animated = parser.readLong() == 1
     }
-    
-    
+
 }
+
+
 
 struct BSPMipTex: BSPLump {
     
@@ -197,7 +219,6 @@ struct BSPMipTex: BSPLump {
         let parser = BSPDataParser(data)
         
         name = parser.readString(16)
-        print(name)
         width = parser.readLong()
         height = parser.readLong()
         offsetMipLevel0 = parser.readLong()

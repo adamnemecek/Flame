@@ -17,7 +17,10 @@ class QuakeBSP {
     var planes: [BSPPlane]!
     var faces: [BSPFace]!
     var edgeList: [BSPEdgePointer]!
-    
+    var mipTextures: [BSPMipTex]!
+    var textureInfo: [BSPTextureInfo]!
+
+    var textureData = [String: NSData]()
     
     // MARK: - Public API
     
@@ -47,7 +50,9 @@ class QuakeBSP {
         planes = parse(data, headerEntry: headerEntries[HeaderIndex.Planes])
         faces = parse(data, headerEntry: headerEntries[HeaderIndex.Faces])
         edgeList = parse(data, headerEntry: headerEntries[HeaderIndex.EdgeList])
-
+        mipTextures = parseMipTextures(data, headerEntry: headerEntries[HeaderIndex.MipTex])
+        textureInfo = parse(data, headerEntry: headerEntries[HeaderIndex.TexInfo])
+        
         // Parse entity definitions.
         parser.readOffset = headerEntries[HeaderIndex.Entities].offset
         let entitiesDefinition = parser.readString(headerEntries[HeaderIndex.Entities].size)
@@ -167,6 +172,33 @@ class QuakeBSP {
             assertionFailure()
             return [BSPEntity]()
         }
+    }
+    
+    private func parseMipTextures(data: NSData, headerEntry: BSPHeaderEntry) -> [BSPMipTex] {
+        var result = [BSPMipTex]()
+        let parser = BSPDataParser(data)
+        
+        parser.readOffset = headerEntry.offset
+        let numTextures = parser.readLong()
+        
+        var textureOffsets = [Int](count: numTextures, repeatedValue: 0)
+        for textureIndex in 0 ..< numTextures {
+            textureOffsets[textureIndex] = parser.readLong() + headerEntry.offset
+        }
+        
+        for textureOffset in textureOffsets {
+            let mipTexData = data.subdataWithRange(NSRange(location: textureOffset, length: BSPMipTex.dataSize))
+            
+            if let mipTex = BSPMipTex(data: mipTexData) {
+                textureData[mipTex.name] = data.subdataWithRange(NSRange(location: textureOffset + mipTex.offsetMipLevel0,
+                    length: mipTex.width * mipTex.height))
+                
+                result.append(mipTex)
+            }
+
+        }
+        
+        return result
     }
 
 }

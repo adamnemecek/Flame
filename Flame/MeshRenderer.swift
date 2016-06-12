@@ -13,6 +13,8 @@ class MeshRenderer : Component {
     var vertexBuffer: MTLBuffer?
     var indexBuffer: MTLBuffer?
     
+    var hidden = false
+    
     required init() {
         super.init()
         generateBuffers()

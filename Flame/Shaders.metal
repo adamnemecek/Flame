@@ -18,31 +18,40 @@ struct Uniforms
 
 struct Vertex
 {
-    float4 position [[position]];
-    float4 color;
+    float4 position         [[ attribute(0) ]];
+    float4 color            [[ attribute(1) ]];
+    float2 textureCoords    [[ attribute(2) ]];
 };
 
 struct ProjectedVertex
 {
-    float4 position [[position]];
+    float4 position         [[position]];
     float4 color;
+    float2 textureCoords;
 };
 
+constexpr sampler textureSampler(coord::normalized,
+                                 address::repeat,
+                                 filter::nearest);
+
 // Vertex shader
-vertex ProjectedVertex vertex_main(constant Vertex *vertices [[buffer(0)]],
-                                 constant Uniforms &uniforms [[buffer(1)]],
-                                 uint vertexID [[vertex_id]])
+vertex ProjectedVertex vertex_main(Vertex vert [[stage_in]],
+                                 constant Uniforms &uniforms [[buffer(1)]])
 {
-    ProjectedVertex vert;
+    ProjectedVertex out;
     
-    vert.position = uniforms.modelViewProjectionMatrix * vertices[vertexID].position;
-    vert.color = vertices[vertexID].color;
+    out.position = uniforms.modelViewProjectionMatrix * vert.position;
+    out.color = vert.color;
+    out.textureCoords = vert.textureCoords;
     
-    return vert;
+    return out;
 }
 
 // Fragment shader
-fragment float4 fragment_main(ProjectedVertex vert [[stage_in]])
+fragment float4 fragment_main(ProjectedVertex vert [[stage_in]],
+                              texture2d<float> diffuseTexture [[texture(0)]],
+                              sampler textureSampler [[sampler(0)]])
 {
-    return vert.color;
+    float4 textureColor = diffuseTexture.sample(textureSampler, vert.textureCoords);
+    return vert.color * textureColor;
 }

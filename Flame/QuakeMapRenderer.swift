@@ -10,7 +10,7 @@ import MetalKit
 
 class QuakeMapRenderer : MeshRenderer {
 
-    var drawWireframe = true
+    var drawWireframe = false
     
     var wireVertexBuffer: MTLBuffer?
     var wireVertexCount: Int = 0
@@ -20,6 +20,8 @@ class QuakeMapRenderer : MeshRenderer {
             generateBuffers()
         }
     }
+
+    var textureAtlas: QuakeTextureAtlas?
     
     private var vertexCount = 0
     
@@ -30,18 +32,19 @@ class QuakeMapRenderer : MeshRenderer {
         
         var vertices = [Vertex]()
         
-        // vertices.append(Vertex(position: Vector4(v0.x, v0.z, -v0.y, 1), color: defaultColor))
-        
         for face in bsp.faces {
 
             // Look up list of face edges and extract vertices.
             var faceVertices = [BSPVertex]()
-
+            var faceUVs = [Vector2]()
+            
+            let textureInfo = bsp.textureInfo[face.textureIndex]
+            let scaleS = Float(bsp.mipTextures[textureInfo.textureIndex].width)
+            let scaleT = Float(bsp.mipTextures[textureInfo.textureIndex].height)
+            
             for f in 0 ..< face.edgeCount {
                 let faceEdgeIndex = face.firstEdgeIndex + f
                 let edgeIndex = bsp.edgeList[faceEdgeIndex].edgeIndex
-                
-                //print("e \(edgeIndex)")
                 
                 var vertexIndex = 0
                 
@@ -54,9 +57,13 @@ class QuakeMapRenderer : MeshRenderer {
                     vertexIndex = bsp.edges[edgeIndex].endVertexIndex
                 }
                 
-                //print("e \(edgeIndex) -> v \(vertexIndex)")
-
-                faceVertices.append(bsp.vertices[vertexIndex])
+                let bspVertex = bsp.vertices[vertexIndex]
+                faceVertices.append(bspVertex)
+                
+                let vertexPosition = bspVertex.position.toVector3()
+                let textureCoords = Vector2((vertexPosition.dot(textureInfo.vectorS.toVector3()) + textureInfo.offsetS) / scaleS,
+                                            (vertexPosition.dot(textureInfo.vectorT.toVector3()) + textureInfo.offsetT) / scaleT)
+                faceUVs.append(textureCoords)
             }
             
             // Assemble triangles and add to vertex buffer.
@@ -69,25 +76,11 @@ class QuakeMapRenderer : MeshRenderer {
                 triangleStep += 3
             }
             
-            var colorStepper = 0
+            let white = Vector4(1, 1, 1, 1)
             for index in indices {
-                
                 let v = faceVertices[index]
-                
-                var vertColor = Vector4(0.9, 0.9, 0.9, 1)
-                if colorStepper == 1 {
-                    vertColor = Vector4(0.85, 0.85, 0.85, 1)
-                }
-                if colorStepper == 2 {
-                    vertColor = Vector4(0.8, 0.8, 0.8, 1)
-                }
-
-                vertices.append(Vertex(position: Vector4(v.position.toVector3(), 1), color: vertColor))
-                
-                colorStepper += 1
-                if colorStepper > 2 {
-                    colorStepper = 0
-                }
+                let texCoords = faceUVs[index]
+                vertices.append(Vertex(position: Vector4(v.position.toVector3(), 1), color: white, textureCoords: texCoords))
             }
             
         }
@@ -118,6 +111,10 @@ class QuakeMapRenderer : MeshRenderer {
         if drawWireframe {
             commandEncoder.setVertexBuffer(wireVertexBuffer, offset: 0, atIndex: 0)
             commandEncoder.drawPrimitives(.Line, vertexStart: 0, vertexCount: wireVertexCount, instanceCount: 1)
+        }
+        
+        if let texture = textureAtlas?.texture {
+            commandEncoder.setFragmentTexture(texture, atIndex: 0)
         }
 
         commandEncoder.setVertexBuffer(vertexBuffer, offset: 0, atIndex: 0)
