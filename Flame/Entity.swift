@@ -28,6 +28,11 @@ class Entity {
         return component
     }
 
+    func addComponent(component: Component) {
+        component.entity = self
+        components.append(component)
+    }
+    
     func getComponents<T where T: Component>(type: T.Type) -> [T] {
         return components.filter { $0 is T } as! [T]
     }

@@ -24,8 +24,6 @@
 		B93420911CB77FBF00CE8193 /* CubeRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B93420901CB77FBF00CE8193 /* CubeRenderer.swift */; };
 		B9354FBC1CD6609400C8FB28 /* QuakeBSP.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9354FBB1CD6609400C8FB28 /* QuakeBSP.swift */; };
 		B9354FBE1CD6625200C8FB28 /* QuakeTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9354FBD1CD6625200C8FB28 /* QuakeTypes.swift */; };
-		B9354FC01CD6630E00C8FB28 /* testmap.bsp in Resources */ = {isa = PBXBuildFile; fileRef = B9354FBF1CD6630E00C8FB28 /* testmap.bsp */; };
-		B9601F751D05DEB000B06861 /* QuakeTextureAtlas.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9601F741D05DEB000B06861 /* QuakeTextureAtlas.swift */; };
 		B96EF4A51CD90EFC0038A0A1 /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B96EF4A41CD90EFC0038A0A1 /* Metal.framework */; };
 		B96EF4A71CD90F2E0038A0A1 /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B96EF4A61CD90F2E0038A0A1 /* MetalKit.framework */; };
 		B99049D91CE8FAFD00372FC3 /* QuakeMapRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B99049D81CE8FAFD00372FC3 /* QuakeMapRenderer.swift */; };
@@ -60,7 +58,6 @@
 		B916CA561CEAE24300A344B4 /* honey.bsp */ = {isa = PBXFileReference; lastKnownFileType = file; path = honey.bsp; sourceTree = "<group>"; };
 		B91EA1661CAA5D6100BFEC30 /* QuadRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuadRenderer.swift; sourceTree = "<group>"; };
 		B924B9C21CEE13D50099362B /* palette.lmp */ = {isa = PBXFileReference; lastKnownFileType = file; path = palette.lmp; sourceTree = "<group>"; };
-		B92B8C9F1CCFC71B00A85DEB /* BSP.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = BSP.playground; sourceTree = "<group>"; };
 		B92E89FD1CA85E4500F8768A /* Flame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Flame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B92E8A001CA85E4500F8768A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B92E8A021CA85E4500F8768A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -77,8 +74,6 @@
 		B93420901CB77FBF00CE8193 /* CubeRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CubeRenderer.swift; sourceTree = "<group>"; };
 		B9354FBB1CD6609400C8FB28 /* QuakeBSP.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuakeBSP.swift; sourceTree = "<group>"; };
 		B9354FBD1CD6625200C8FB28 /* QuakeTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuakeTypes.swift; sourceTree = "<group>"; };
-		B9354FBF1CD6630E00C8FB28 /* testmap.bsp */ = {isa = PBXFileReference; lastKnownFileType = file; name = testmap.bsp; path = BSP.playground/Resources/testmap.bsp; sourceTree = "<group>"; };
-		B9601F741D05DEB000B06861 /* QuakeTextureAtlas.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuakeTextureAtlas.swift; sourceTree = "<group>"; };
 		B96EF4A41CD90EFC0038A0A1 /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
 		B96EF4A61CD90F2E0038A0A1 /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
 		B99049D81CE8FAFD00372FC3 /* QuakeMapRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuakeMapRenderer.swift; sourceTree = "<group>"; };
@@ -146,7 +141,6 @@
 				B92E8A261CA97A8000F8768A /* Utilities */,
 				B92E8A231CA956C700F8768A /* Shaders */,
 				B92E8A241CA956D000F8768A /* Supporting Files */,
-				B92B8C9F1CCFC71B00A85DEB /* BSP.playground */,
 			);
 			path = Flame;
 			sourceTree = "<group>";
@@ -173,7 +167,6 @@
 			children = (
 				B924B9C21CEE13D50099362B /* palette.lmp */,
 				B916CA561CEAE24300A344B4 /* honey.bsp */,
-				B9354FBF1CD6630E00C8FB28 /* testmap.bsp */,
 				B99049DA1CE905AC00372FC3 /* blockout.bsp */,
 				B99049DC1CE90CEF00372FC3 /* e1m1.bsp */,
 				B92E8A041CA85E4500F8768A /* Assets.xcassets */,
@@ -208,7 +201,6 @@
 				B9354FBD1CD6625200C8FB28 /* QuakeTypes.swift */,
 				B916CA521CEADBBA00A344B4 /* BSPDataParser.swift */,
 				B99049D81CE8FAFD00372FC3 /* QuakeMapRenderer.swift */,
-				B9601F741D05DEB000B06861 /* QuakeTextureAtlas.swift */,
 			);
 			name = Quake;
 			sourceTree = "<group>";
@@ -354,7 +346,6 @@
 				B924B9C31CEE13D50099362B /* palette.lmp in Resources */,
 				B99049DD1CE90CEF00372FC3 /* e1m1.bsp in Resources */,
 				B99049DB1CE905AC00372FC3 /* blockout.bsp in Resources */,
-				B9354FC01CD6630E00C8FB28 /* testmap.bsp in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -390,7 +381,6 @@
 				B99049D91CE8FAFD00372FC3 /* QuakeMapRenderer.swift in Sources */,
 				B9D7965B1CB07A1B002FFDF6 /* Renderer.swift in Sources */,
 				B9A9EC981CCE7D2100A7645B /* VectorMath.swift in Sources */,
-				B9601F751D05DEB000B06861 /* QuakeTextureAtlas.swift in Sources */,
 				B92E8A011CA85E4500F8768A /* AppDelegate.swift in Sources */,
 				B9E16AA81CAA46BF0027032F /* Scene.swift in Sources */,
 				B9D796591CB079F3002FFDF6 /* Entity.swift in Sources */,

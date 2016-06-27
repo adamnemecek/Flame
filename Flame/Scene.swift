@@ -68,6 +68,7 @@ class Scene {
         print("\(bsp.entities.count) entities")
         print("\(bsp.planes.count) planes")
         print("\(bsp.faces.count) faces")
+        print("\(bsp.mipTextures.count) textures")
 
         guard let paletteFilePath = NSBundle.mainBundle().pathForResource("palette", ofType: "lmp") else {
             print("❌ Palette file not found.")
@@ -80,13 +81,14 @@ class Scene {
         }
         
         guard let palette = QuakePalette(data: paletteData) else { return }
-        guard let textureAtlas = QuakeTextureAtlas(bsp: bsp, palette: palette) else { return }
         
+        let quakeMapRenderer = QuakeMapRenderer()
+        quakeMapRenderer.bsp = bsp
+        quakeMapRenderer.palette = palette
+                
         let quakeMap = Entity()
         quakeMap.name = "QuakeMap"
-        let mapRendererComponent = quakeMap.addComponent(QuakeMapRenderer)
-        mapRendererComponent.bsp = bsp
-        mapRendererComponent.textureAtlas = textureAtlas
+        quakeMap.addComponent(quakeMapRenderer)
         entities.append(quakeMap)
         
         // Try to move camera to the first info_player_start in the map.
@@ -124,22 +126,4 @@ class Scene {
         
         return renderers
     }
-    
-    // MARK: - Private API
-
-    private func createQuakeTexture(bsp: QuakeBSP, palette: QuakePalette) -> MTLTexture? {
-        
-        var totalTexels = 0
-        
-        for tex in bsp.mipTextures {
-            print(tex.name)
-            totalTexels += tex.width * tex.height
-        }
-        
-        let atlasSide = Int(ceil(sqrt(Double(totalTexels))))
-        print("Total area: \(totalTexels) texels (approx. \(atlasSide)x\(atlasSide))")
-
-        return nil
-    }
-    
 }
