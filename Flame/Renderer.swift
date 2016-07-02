@@ -138,13 +138,7 @@ class Renderer {
         depthStencilDescriptor.depthCompareFunction = .Less
         depthStencilState = device.newDepthStencilStateWithDescriptor(depthStencilDescriptor)
         
-        let depthTextureDescriptor = MTLTextureDescriptor()
-        depthTextureDescriptor.resourceOptions = .StorageModePrivate
-        depthTextureDescriptor.usage = .RenderTarget
-        depthTextureDescriptor.pixelFormat = .Depth32Float
-        depthTextureDescriptor.width = Int(framebufferSize.width)
-        depthTextureDescriptor.height = Int(framebufferSize.height)
-        depthTexture = device.newTextureWithDescriptor(depthTextureDescriptor)
+        createDepthTexture(framebufferSize)
 
         let textureSamplerDescriptor = MTLSamplerDescriptor()
         textureSamplerDescriptor.minFilter = .Nearest
@@ -164,6 +158,23 @@ class Renderer {
                                        mipmapLevel: 0,
                                        withBytes: UnsafePointer<UInt8>(rawTexture.bytes),
                                        bytesPerRow: 4 * fallbackTextureSize)
+    }
+
+    func resizeView(toSize size: NSSize) {
+        createDepthTexture(size)
+    }
+    
+    // MARK: - Private API
+    
+    private func createDepthTexture(size: NSSize) {
+        let depthTextureDescriptor = MTLTextureDescriptor()
+        depthTextureDescriptor.resourceOptions = .StorageModePrivate
+        depthTextureDescriptor.usage = .RenderTarget
+        depthTextureDescriptor.pixelFormat = .Depth32Float
+        depthTextureDescriptor.width = Int(size.width)
+        depthTextureDescriptor.height = Int(size.height)
+        
+        depthTexture = device.newTextureWithDescriptor(depthTextureDescriptor)
     }
     
 }

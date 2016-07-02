@@ -43,6 +43,13 @@ class MetalView: MTKView {
         
     }
 
+    override func setFrameSize(newSize: NSSize) {
+        super.setFrameSize(newSize)
+        
+        let framebufferSize = convertSizeToBacking(newSize)
+        Renderer.sharedInstance.resizeView(toSize: framebufferSize)
+    }
+    
     // MARK: - Private API
     
     private func updateDeltaTime() -> NSTimeInterval {

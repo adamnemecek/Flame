@@ -29,7 +29,7 @@ class Camera : Component {
     }
     
     required init() {
-        fov = 90
+        fov = 110
         near = 16.0
         far = 4096.0
         aspect = 0.75
@@ -39,8 +39,8 @@ class Camera : Component {
     
     override func update(seconds: NSTimeInterval) {
         guard let entity = entity else { return }
-        let lookSpeed: Float = 4.0 * Float(seconds)
-        let moveSpeed: Float = 512.0 * Float(seconds)
+        let lookSpeed: Float = 3.0 * Float(seconds)
+        let moveSpeed: Float = 256.0 * Float(seconds)
         
         let viewMatrix = self.viewMatrix.toArray()
         

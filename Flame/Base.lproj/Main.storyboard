@@ -656,7 +656,7 @@
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
                         <rect key="contentRect" x="400" y="300" width="800" height="600"/>
                         <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
-                        <value key="minSize" type="size" width="800" height="600"/>
+                        <value key="minSize" type="size" width="320" height="200"/>
                     </window>
                     <connections>
                         <outlet property="window" destination="IQv-IB-iLA" id="4Cr-0b-4hA"/>
